@@ -8,7 +8,8 @@ class Auth extends Component {
     state = {
         login: "",
         pass: "",
-        isLoggedIn: false
+        isLoggedIn: false,
+        alert: null
     }
 
     componentDidMount(){

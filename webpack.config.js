@@ -12,6 +12,12 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            { 
+                type: "javascript/auto",
+                test: /\.json$/, 
+                exclude: /(node_modules|bower_components)/,
+                use: ['json-loader']
             }
         ]
     },

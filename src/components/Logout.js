@@ -6,7 +6,8 @@ class TaskList extends Component {
     state = {
         login: "",
         pass: "",
-        isLoggedIn: false
+        isLoggedIn: false,
+        alert: null
     }
 
     render(){
