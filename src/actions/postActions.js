@@ -1,6 +1,6 @@
-export const rmmbrSendedData = (data) => {
+export const auth = (isLoggedIn) => {
     return {
-        type: 'RMMBR_SENDED_DATA',
-        data: data
+        type: 'AUTH',
+        isLoggedIn: isLoggedIn
     }
 }

@@ -1,17 +1,14 @@
 
 const initState = {
-    data: {
-        dataSended: '',
-        dataRecieved: []
-    }
-
+    isLoggedIn: false,
+    alert: null
 }
 
 const rootReducer = (state = initState, action) => {
-    if (action.type === 'RMMBR_SENDED_DATA') {
+    if (action.type === 'AUTH') {
         return {
             ...state,
-            data: action.data
+            isLoggedIn: action.isLoggedIn
         }
     }
     return {

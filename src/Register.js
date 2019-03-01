@@ -1,4 +1,6 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import { auth } from './actions/postActions'
 import { loadState, saveState } from './localStorage'
 import {usersMock} from '../usersMockData.json'
 import Alert from './components/Alert'
@@ -29,9 +31,9 @@ class Register extends Component {
         })
 
         if (matched) { 
-            return this.setState({...this.state, isLoggedIn: true, alert: null},()=>{
+            return this.setState({isLoggedIn: true, alert: null},()=>{
                 saveState(this.state)
-                window.location.reload()
+                this.props.auth(this.state.isLoggedIn)
             })
         }
 
@@ -65,4 +67,16 @@ class Register extends Component {
     }
 }
 
-export default Register
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        auth: (isLoggedIn) => { dispatch(auth(isLoggedIn)) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register)

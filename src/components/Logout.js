@@ -1,20 +1,35 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import { auth } from '../actions/postActions'
 import { Route, Redirect } from 'react-router'
 import { loadState, saveState } from '../localStorage'
 
 class TaskList extends Component {
     state = {
-        login: "",
-        pass: "",
         isLoggedIn: false,
         alert: null
     }
 
-    render(){
+    componentDidMount(){
         saveState(this.state)
-        window.location.reload()
+        this.props.auth(this.state.isLoggedIn)
+    }
+
+    render(){
         return (<Redirect to="/"/>)
     }
 }
 
-export default TaskList
+const mapStateToProps = (state) => {
+    return {
+        isLoggedIn: state.isLoggedIn
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        auth: (isLoggedIn) => { dispatch(auth(isLoggedIn)) }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskList)
