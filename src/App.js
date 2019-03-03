@@ -8,7 +8,7 @@ import Logout from './components/Logout'
 class App extends Component {
     render(){
         return(
-            <div>
+
             <BrowserRouter>
             <div className='App'>
                 <Navbar />
@@ -21,7 +21,7 @@ class App extends Component {
             </Switch>
             </div>
             </BrowserRouter>
-            </div>
+
         )
 
     }

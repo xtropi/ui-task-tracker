@@ -49,8 +49,8 @@ class Register extends Component {
 
     render(){
         return(
-            <div className="Register row" onSubmit={this.handleSubmit}>
-                <form className="mx-auto my-auto text-center w-25">
+            <div className="Register row">
+                <form className="mx-auto my-auto text-center w-25" onSubmit={this.handleSubmit}>
                 <h1 className="form-group text-center font-weight-bold">Task tracker</h1>
                 {this.state.alert != null && <Alert type="danger"/>}
                 <div className="form-group">
