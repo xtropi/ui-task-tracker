@@ -1,7 +1,8 @@
 
 const initState = {
     isLoggedIn: false,
-    alert: null
+    alert: null,
+    tasks: []
 }
 
 const rootReducer = (state = initState, action) => {
@@ -11,6 +12,25 @@ const rootReducer = (state = initState, action) => {
             isLoggedIn: action.isLoggedIn
         }
     }
+
+    if (action.type === 'TASK_CHANGE') {
+        let newTasks = ()=>{
+            state.tasks.map((task)=>{
+                if (task.id==action.task.id){
+                    task=action.task
+                }
+                return task
+            })
+            return state.tasks
+        }
+        
+        return {
+            ...state,
+            tasks: newTasks()
+        }
+    }
+
+
     return {
         ...state
     }

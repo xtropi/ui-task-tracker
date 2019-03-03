@@ -1,9 +1,12 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { auth } from './actions/postActions'
+import { auth } from './actions/authAction'
 import { loadState, saveState } from './localStorage'
-import {usersMock} from '../usersMockData.json'
 import Alert from './components/Alert'
+
+/*MOCKDATA->*/
+import {usersMock} from '../usersMockData.json'
+/*<-MOCKDATA*/
 
 class Register extends Component {
     state = {
@@ -24,6 +27,14 @@ class Register extends Component {
 
     handleSubmit = (e)=>{
         e.preventDefault()
+
+        //#### AUTH MOCKUP -> ####
+        /* 
+            need to be changed to real server-based auth request through fetch(),
+            set JWT to localStorage\sessionStorage
+            and pass user based on token
+        */ 
+
         let matched = usersMock.find((user)=>{ 
             if ((user.login===this.state.login)&&(user.pass===this.state.pass)){
                 return user
@@ -32,6 +43,10 @@ class Register extends Component {
 
         if (matched) { 
             return this.setState({isLoggedIn: true, alert: null},()=>{
+                //saving into localStorage
+                 /*
+                    maybe would be better to use sessionStorage
+                 */
                 saveState(this.state)
                 this.props.auth(this.state.isLoggedIn)
             })
@@ -40,6 +55,7 @@ class Register extends Component {
         if (this.state.isLoggedIn === false) {
             return this.setState({...this.state, alert: "danger"})
         }
+        //#### <- AUTH MOCKUP ####
     }
 
     handleInput = (e)=>{

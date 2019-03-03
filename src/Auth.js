@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { auth } from './actions/postActions'
+import { auth } from './actions/authAction'
 import App from './App'
 import Register from './Register'
 import { loadState, saveState } from './localStorage'
