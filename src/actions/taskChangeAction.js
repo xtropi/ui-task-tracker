@@ -1,4 +1,4 @@
-export const auth = (task) => {
+export const taskChange = (task) => {
     return {
         type: 'TASK_CHANGE',
         task: task

@@ -13,6 +13,14 @@ const rootReducer = (state = initState, action) => {
         }
     }
 
+    if (action.type === 'TASKS_SET') {
+      
+        return {
+            ...state,
+            tasks: action.tasks
+        }
+    }
+
     if (action.type === 'TASK_CHANGE') {
         let newTasks = ()=>{
             state.tasks.map((task)=>{

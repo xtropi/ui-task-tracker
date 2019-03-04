@@ -1,8 +1,13 @@
 import React, {Component} from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { loadState, saveState } from '../localStorage'
+import { connect } from 'react-redux'
+import { taskChange } from '../actions/taskChangeAction'
+import { tasksSet } from '../actions/tasksSetAction'
+
 
 /*MOCKDATA->*/
-import {tasksMock} from '../../tasksMockData.json'
+import {tasks as tasksMock} from '../../tasksMockData.json'
 /*<-MOCKDATA*/
 
 // fake data generator
@@ -11,6 +16,11 @@ const getItems = (count, offset = 0) =>
         id: `item-${k + offset}`,
         content: `item ${k + offset}`
     }))
+
+let getTasksByStatus = (tasks, status)=>{
+  let statusTasks = tasks.filter((task)=>task.status==status)
+  return statusTasks
+}
 
 // a little function to help with reordering the result
 let reorder = (list, startIndex, endIndex) => {
@@ -53,6 +63,8 @@ let getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 })
 
+
+
 let getPlanningListStyle = isDraggingOver => ({
     background: 'rgb(255,255,235)',
     padding: grid,
@@ -77,26 +89,34 @@ let getDoneListStyle = isDraggingOver => ({
 class ScrumDesk extends Component {
 
   state = {
-      planning: [
-        {id: "item-1", content: "item 1"},
-        {id: "item-2", content: <button>button</button>},
-        {id: "item-3", content: "item 3"}
-      ],
-      processing: [
-          {id: "item-4", content: "item 4"},
-          {id: "item-5", content: "item 5"},
-          {id: "item-6", content: "item 6"}
-      ],
-      done: [
-          {id: "item-7", content: "item 7"},
-          {id: "item-8", content: "item 8"},
-          {id: "item-9", content: "item 9"}
-      ],
+    planning: [],
+    processing: [],
+    done: [],
   }
 
   componentDidMount(){
+    let loadedState = loadState()
 
+    // TASKS DATA MOCKUP ->
+      /* 
+        need to be replaced with data fetching from real server 
+      */
+    let addedContent = tasksMock.map((task)=>({...task, content: task.title}))
+    saveState({...loadedState, tasks: addedContent})
+    //tasksSet({...loadedState, tasks: addedContent})
+    loadedState = loadState()
+    // <- TASKS DATA MOCKUP
+
+    
+    let newState = {
+      planning: getTasksByStatus(loadedState.tasks, 'planning'),
+      processing: getTasksByStatus(loadedState.tasks, 'processing'),
+      done: getTasksByStatus(loadedState.tasks, 'done'),
+    }
+    this.setState(newState)
   }
+
+
 
   onDragEnd = (result) =>{
     const { source, destination } = result
@@ -108,6 +128,7 @@ class ScrumDesk extends Component {
 
     // dropped on same list
     if (source.droppableId === destination.droppableId) {
+     // console.log(this.getTasksByStatus(result.destination.droppableId))
       let items = reorder(
         this.state[result.destination.droppableId],
         result.source.index,
@@ -234,4 +255,17 @@ class ScrumDesk extends Component {
 
 }
 
-export default ScrumDesk
+
+const mapStateToProps = (state) => {
+  return {
+      tasks: state.tasks
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      taskChange: (task) => { dispatch(taskChange(task)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ScrumDesk)
