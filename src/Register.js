@@ -47,7 +47,7 @@ class Register extends Component {
                  /*
                     maybe would be better to use sessionStorage
                  */
-                saveState(this.state)
+                saveState({isLoggedIn: this.state.isLoggedIn, alert: this.state.alert})
                 this.props.auth(this.state.isLoggedIn)
             })
         }
