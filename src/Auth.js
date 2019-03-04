@@ -7,13 +7,14 @@ import { loadState, saveState } from './localStorage'
 
 class Auth extends Component {
 
-    state = {
-        isLoggedIn: false,
-        alert: null
-    }
-
     componentDidMount(){
-        this.setState(loadState())
+        // Auto auth with session (need to rework)
+        let loadedState = loadState()
+        
+        if (loadedState){
+            loadedState.alert = null
+            this.props.auth(loadedState.isLoggedIn)
+        }
     }
 
     render(){
