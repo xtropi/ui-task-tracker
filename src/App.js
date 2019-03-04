@@ -18,7 +18,19 @@ class App extends Component {
           /* 
             need to be replaced with data fetching from real server 
           */
-        let addedContent = tasksMock.map((task)=>({...task, content: task.priority}))
+
+        let addedContent = tasksMock.map((task)=>{
+            let content = (
+                <div>
+                    <div>Title: {task.title}</div>
+                    <div>Prioroty: {task.priority}</div>
+                    <div>User: {task.user}</div>
+                </div>
+            )
+            let result = {...task, content: content}
+            return result
+            })
+
         // <- TASKS DATA MOCKUP
     
         this.props.tasksSet(addedContent)
