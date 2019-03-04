@@ -4,8 +4,27 @@ import ScrumDesk from './components/ScrumDesk'
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import TaskList from './components/TaskList'
 import Logout from './components/Logout'
+import { connect } from 'react-redux'
+import { tasksSet } from './actions/tasksSetAction'
+
+/*MOCKDATA->*/
+import {tasks as tasksMock} from '../tasksMockData.json'
+/*<-MOCKDATA*/
 
 class App extends Component {
+
+    componentDidMount(){
+        // TASKS DATA MOCKUP ->
+          /* 
+            need to be replaced with data fetching from real server 
+          */
+        let addedContent = tasksMock.map((task)=>({...task, content: task.priority}))
+        // <- TASKS DATA MOCKUP
+    
+        this.props.tasksSet(addedContent)
+
+      }
+
     render(){
         return(
 
@@ -27,4 +46,16 @@ class App extends Component {
     }
 }
 
-export default App
+const mapStateToProps = (state) => {
+    return {
+        tasks: state.tasks
+    }
+  }
+  
+  const mapDispatchToProps = (dispatch) => {
+    return {
+        tasksSet: (tasks) => { dispatch(tasksSet(tasks)) }
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

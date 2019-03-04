@@ -2,8 +2,18 @@
 const initState = {
     isLoggedIn: false,
     alert: null,
+    scrumDesk:{
+        planning: [],
+        processing: [],
+        done: [],
+    },
     tasks: []
 }
+
+let getTasksByStatus = (tasks, status)=>{
+    let statusTasks = tasks.filter((task)=>task.status==status)
+    return statusTasks
+  }
 
 const rootReducer = (state = initState, action) => {
     if (action.type === 'AUTH') {
@@ -14,27 +24,39 @@ const rootReducer = (state = initState, action) => {
     }
 
     if (action.type === 'TASKS_SET') {
-      
+        let newScrumDesk = {
+            planning: getTasksByStatus(action.tasks, 'planning'),
+            processing: getTasksByStatus(action.tasks, 'processing'),
+            done: getTasksByStatus(action.tasks, 'done'),
+        }
+          
         return {
             ...state,
+            scrumDesk: newScrumDesk,
             tasks: action.tasks
         }
     }
 
     if (action.type === 'TASK_CHANGE') {
-        let newTasks = ()=>{
-            state.tasks.map((task)=>{
+
+        let newTasks = state.tasks.map((task)=>{
                 if (task.id==action.task.id){
                     task=action.task
                 }
                 return task
             })
-            return state.tasks
+        
+
+        let newScrumDesk = {
+            planning: getTasksByStatus(newTasks, 'planning'),
+            processing: getTasksByStatus(newTasks, 'processing'),
+            done: getTasksByStatus(newTasks, 'done'),
         }
         
         return {
             ...state,
-            tasks: newTasks()
+            scrumDesk: newScrumDesk,
+            tasks: newTasks
         }
     }
 

@@ -1,51 +1,23 @@
 import React, {Component} from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { loadState, saveState } from '../localStorage'
+//import { loadState, saveState } from '../localStorage'
 import { connect } from 'react-redux'
 import { taskChange } from '../actions/taskChangeAction'
 import { tasksSet } from '../actions/tasksSetAction'
 
-
-/*MOCKDATA->*/
-import {tasks as tasksMock} from '../../tasksMockData.json'
-/*<-MOCKDATA*/
-
-// fake data generator
-const getItems = (count, offset = 0) =>
-    Array.from({ length: count }, (v, k) => k).map(k => ({
-        id: `item-${k + offset}`,
-        content: `item ${k + offset}`
-    }))
-
-let getTasksByStatus = (tasks, status)=>{
-  let statusTasks = tasks.filter((task)=>task.status==status)
-  return statusTasks
-}
-
 // a little function to help with reordering the result
-let reorder = (list, startIndex, endIndex) => {
-  let result = Array.from(list)
-  let [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
+let reorder = (taskA, taskB) => {
+  let numPriority = (text)=>{
+    if (text == 'high') return 0
+    if (text == 'medium') return 1
+    if (text == 'low') return 2
+    return 0
+  }
 
-  return result
-}
+  let aPriority = numPriority(taskA.priority)
+  let bPriority = numPriority(taskB.priority)
 
-/**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source)
-  const destClone = Array.from(destination)
-  const [removed] = sourceClone.splice(droppableSource.index, 1)
-
-  destClone.splice(droppableDestination.index, 0, removed)
-
-  const result = {}
-  result[droppableSource.droppableId] = sourceClone
-  result[droppableDestination.droppableId] = destClone
-
-  return result
+  return aPriority-bPriority;
 }
 
 let grid = 5
@@ -88,70 +60,20 @@ let getDoneListStyle = isDraggingOver => ({
 
 class ScrumDesk extends Component {
 
-  state = {
-    planning: [],
-    processing: [],
-    done: [],
-  }
-
-  componentDidMount(){
-    let loadedState = loadState()
-
-    // TASKS DATA MOCKUP ->
-      /* 
-        need to be replaced with data fetching from real server 
-      */
-    let addedContent = tasksMock.map((task)=>({...task, content: task.title}))
-    saveState({...loadedState, tasks: addedContent})
-    //tasksSet({...loadedState, tasks: addedContent})
-    loadedState = loadState()
-    // <- TASKS DATA MOCKUP
-
-    
-    let newState = {
-      planning: getTasksByStatus(loadedState.tasks, 'planning'),
-      processing: getTasksByStatus(loadedState.tasks, 'processing'),
-      done: getTasksByStatus(loadedState.tasks, 'done'),
-    }
-    this.setState(newState)
-  }
-
-
-
   onDragEnd = (result) =>{
-    const { source, destination } = result
+    const { source, destination, draggableId } = result
 
     // dropped outside the list
     if (!destination) {
       return
     }
 
-    // dropped on same list
-    if (source.droppableId === destination.droppableId) {
-     // console.log(this.getTasksByStatus(result.destination.droppableId))
-      let items = reorder(
-        this.state[result.destination.droppableId],
-        result.source.index,
-        result.destination.index
-      )
-      this.setState({
-        ...this.state,
-        [result.destination.droppableId]: items,
-      })
-    } else {
     // dropped on other list
-      const result = move(
-          this.state[source.droppableId],
-          this.state[destination.droppableId],
-          source,
-          destination
-      )
-
-      this.setState({
-        ...this.state,
-        [source.droppableId]: result[source.droppableId],
-        [destination.droppableId]: result[destination.droppableId]
-      })
+    if (source.droppableId != destination.droppableId) {
+    
+      let oldTask = this.props.tasks.find((task)=>(task.id===draggableId))
+      let newTask = {...oldTask, status: destination.droppableId}
+      this.props.taskChange(newTask)
     }
   }
 
@@ -167,7 +89,7 @@ class ScrumDesk extends Component {
                         ref={provided.innerRef}
                         style={getPlanningListStyle(snapshot.isDraggingOver)}
                         >
-                        {this.state.planning.map((item, index) => (
+                        {this.props.scrumDesk.planning.sort(reorder).map((item, index) => (
                             <Draggable key={item.id} draggableId={item.id} index={index}>
                             {(provided, snapshot) => (
                                 <div
@@ -196,7 +118,7 @@ class ScrumDesk extends Component {
                         ref={provided.innerRef}
                         style={getProcessingListStyle(snapshot.isDraggingOver)}
                         >
-                        {this.state.processing.map((item, index) => (
+                        {this.props.scrumDesk.processing.sort(reorder).map((item, index) => (
                             <Draggable key={item.id} draggableId={item.id} index={index}>
                             {(provided, snapshot) => (
                                 <div
@@ -225,7 +147,7 @@ class ScrumDesk extends Component {
                         ref={provided.innerRef}
                         style={getDoneListStyle(snapshot.isDraggingOver)}
                         >
-                        {this.state.done.map((item, index) => (
+                        {this.props.scrumDesk.done.sort(reorder).map((item, index) => (
                             <Draggable key={item.id} draggableId={item.id} index={index}>
                             {(provided, snapshot) => (
                                 <div
@@ -258,13 +180,15 @@ class ScrumDesk extends Component {
 
 const mapStateToProps = (state) => {
   return {
-      tasks: state.tasks
+      tasks: state.tasks,
+      scrumDesk: state.scrumDesk
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-      taskChange: (task) => { dispatch(taskChange(task)) }
+      taskChange: (task) => { dispatch(taskChange(task)) },
+      tasksSet: (tasks) => { dispatch(tasksSet(tasks)) }
   }
 }
 
