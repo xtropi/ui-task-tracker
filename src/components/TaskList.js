@@ -4,9 +4,14 @@ class TaskList extends Component {
     render(){
         return(
             <div>
-            TaskList
+            filter inputs, sort buttons
+            <hr/>
+            <div>
+            taskList
             <hr/>
             </div>
+            </div>
+
         )
 
     }
