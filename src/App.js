@@ -11,6 +11,8 @@ import { tasksSet } from './actions/tasksSetAction'
 import {tasks as tasksMock} from '../tasksMockData.json'
 /*<-MOCKDATA*/
 
+
+
 class App extends Component {
 
     componentDidMount(){
@@ -21,10 +23,11 @@ class App extends Component {
 
         let addedContent = tasksMock.map((task)=>{
             let content = (
-                <div>
-                    <div>Title: {task.title}</div>
-                    <div>Prioroty: {task.priority}</div>
-                    <div>User: {task.user}</div>
+                <div className="card text-white bg-danger mb-3">
+                    <div className="card-header" style={{fontWeight: 'bold'}}>{task.title}</div>
+                    <div class="card-body">
+                        <div>User: {task.user}</div>
+                    </div>
                 </div>
             )
             let result = {...task, content: content}

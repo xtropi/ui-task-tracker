@@ -22,20 +22,61 @@ let reorder = (taskA, taskB) => {
 
 let grid = 5
 
-let getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  //padding: `${grid * 5}px 0`,
-  margin: `0 0 ${grid}px 0`,
+let getItemStyle = (isDragging, draggableStyle, item) => {
 
-  // change background colour if dragging
-  background: isDragging ? 'lightPink' : 'Pink',
+  let colorPriority = 'black'
+    if (item.priority=='high'){
+      colorPriority = 'FireBrick'
+    }
+    if (item.priority=='medium'){
+      colorPriority = 'Coral'
+    }
+    if (item.priority=='low'){
+      colorPriority = 'Gold'
+    }
+  
 
-  // styles we need to apply on draggables
-  ...draggableStyle,
-})
+  let result = {
+    // some basic styles to make the items look a bit nicer
+    userSelect: 'none',
+    //borderRadius: '6px', 
+    //padding: `${grid * 5}px 20px`,
+    margin: `20px 50px 20px`,
+    //background: colorPriority,
 
+    // change background colour if dragging
+    //background: isDragging ? 'lightPink' : 'Pink',
+  
+    // styles we need to apply on draggables
+    ...draggableStyle,
+  }
+  return result
+}
 
+let card = (task)=>{
+  let colorPriority = 'black'
+  if (task.priority=='high'){
+    colorPriority = "card text-white bg-danger"
+  }
+  if (task.priority=='medium'){
+    colorPriority = "card text-black bg-warning"
+  }
+  if (task.priority=='low'){
+    colorPriority = "card text-white bg-success"
+  }
+
+  let result = (
+    <div className={colorPriority}>
+      <div className="card-header" style={{fontWeight: 'bold'}}>{task.title}</div>
+      <div className="card-body">
+          <div>User: {task.user}</div>
+          <div>Description: <div>{task.description}</div></div>
+      </div>
+    </div>
+  )
+
+  return result
+}
 
 let getPlanningListStyle = isDraggingOver => ({
     background: 'rgb(255,255,235)',
@@ -98,10 +139,12 @@ class ScrumDesk extends Component {
                                 {...provided.dragHandleProps}
                                 style={getItemStyle(
                                     snapshot.isDragging,
-                                    provided.draggableProps.style
+                                    provided.draggableProps.style,
+                                    item
                                 )}
                                 >
-                                {item.content}
+                                {/* {item.content} */}
+                                {card(item)}
                                 </div>
                             )}
                             </Draggable>
@@ -113,7 +156,7 @@ class ScrumDesk extends Component {
             </div>
             <div className="col-4">
             <Droppable droppableId="processing">
-                    {(provided, snapshot) => (
+                    {(provided, snapshot) => ( 
                         <div
                         ref={provided.innerRef}
                         style={getProcessingListStyle(snapshot.isDraggingOver)}
@@ -127,10 +170,12 @@ class ScrumDesk extends Component {
                                 {...provided.dragHandleProps}
                                 style={getItemStyle(
                                     snapshot.isDragging,
-                                    provided.draggableProps.style
+                                    provided.draggableProps.style,
+                                    item
                                 )}
                                 >
-                                {item.content}
+                                {/* {item.content} */}
+                                {card(item)}
                                 </div>
                             )}
                             </Draggable>
@@ -156,10 +201,12 @@ class ScrumDesk extends Component {
                                 {...provided.dragHandleProps}
                                 style={getItemStyle(
                                     snapshot.isDragging,
-                                    provided.draggableProps.style
+                                    provided.draggableProps.style,
+                                    item
                                 )}
                                 >
-                                {item.content}
+                                {/* {item.content} */}
+                                {card(item)}
                                 </div>
                             )}
                             </Draggable>
