@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { auth } from './actions/authAction'
+import { setAlert } from './actions/setAlertAction'
 import App from './App'
 import Register from './Register'
 import { loadState, saveState } from './localStorage'
@@ -13,7 +14,7 @@ class Auth extends Component {
         
         if (loadedState){
             loadedState.alert = null
-            this.props.auth(loadedState.isLoggedIn)
+            this.props.auth(loadedState)
         }
     }
 
@@ -24,13 +25,15 @@ class Auth extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.isLoggedIn
+        isLoggedIn: state.isLoggedIn,
+        alert: state.alert,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        auth: (isLoggedIn) => { dispatch(auth(isLoggedIn)) }
+        auth: (isLoggedIn) => { dispatch(auth(isLoggedIn)) },
+        setAlert: (alert) => { dispatch(setAlert(alert)) },
     }
 }
 

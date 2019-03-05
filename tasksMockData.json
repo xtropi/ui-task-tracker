@@ -1,10 +1,22 @@
 {
     "tasks":[
-        {"id":"task-1","user":"root","title":"JWT Auth","description":"desc1","data":"2019-02-28T17:41:21.632Z","priority":"medium","pTime":"40","fTime":"30","status":"done"},
-        {"id":"task-2","user":"root","title":"Scrum Desk","description":"desc2","data":"2019-02-28T17:41:21.632Z","priority":"low","pTime":"24","fTime":"43","status":"planning"},
-        {"id":"task-3","user":"root","title":"My Tasks table view","description":"desc3","data":"2019-02-28T17:41:21.632Z","priority":"low","pTime":"42","fTime":"42","status":"processing"},
-        {"id":"task-4","user":"root","title":"My Tasks add/edit view","description":"desc4","data":"2019-02-28T17:41:21.632Z","priority":"medium","pTime":"1","fTime":"0","status":"processing"},
-        {"id":"task-5","user":"qwerty","title":"My Tasks task view","description":"desc5","data":"2019-02-28T17:41:21.632Z","priority":"high","pTime":"42","fTime":"42","status":"processing"},
-        {"id":"task-6","user":"qwerty","title":"Refactoring","description":"desc6","data":"2019-02-28T17:41:21.632Z","priority":"high","pTime":"1","fTime":"0","status":"processing"}
+        {"id":"task-1","user":"root","title":"JWT Auth",
+            "description":"Make safe authorization system with JSON tokens and probably uses sessionStorage instead of localStorage",
+            "data":"2019-02-28T17:41:21.632Z","priority":"medium","pTime":"40","fTime":"30","status":"done"},
+        {"id":"task-2","user":"root","title":"Scrum Desk",
+            "description":"Make Scrum desk with all tasks and ability to move tasks like stickers to coloumn needed",
+            "data":"2019-02-28T17:41:21.632Z","priority":"low","pTime":"24","fTime":"43","status":"planning"},
+        {"id":"task-3","user":"root","title":"My Tasks table view",
+            "description":"Table with tasks (sorting, add, edit links)",
+            "data":"2019-02-28T17:41:21.632Z","priority":"low","pTime":"42","fTime":"42","status":"processing"},
+        {"id":"task-4","user":"root","title":"My Tasks add/edit view",
+            "description":"add/edit views seems pretty simple",
+            "data":"2019-02-28T17:41:21.632Z","priority":"medium","pTime":"1","fTime":"0","status":"processing"},
+        {"id":"task-5","user":"qwerty","title":"My Tasks task view",
+            "description":"Single task view with full description",
+            "data":"2019-02-28T17:41:21.632Z","priority":"high","pTime":"42","fTime":"42","status":"processing"},
+        {"id":"task-6","user":"qwerty","title":"Refactoring",
+            "description":"Look at your trash code, break keyboard, punch yourself in the face and throw PC out (╯°□°）╯︵ ┻━┻",
+            "data":"2019-02-28T17:41:21.632Z","priority":"high","pTime":"1","fTime":"0","status":"processing"}
     ]
 }

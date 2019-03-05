@@ -6,6 +6,8 @@ import TaskList from './components/TaskList'
 import Logout from './components/Logout'
 import { connect } from 'react-redux'
 import { tasksSet } from './actions/tasksSetAction'
+import Alert from './components/Alert'
+import { setAlert } from './actions/setAlertAction'
 
 /*MOCKDATA->*/
 import {tasks as tasksMock} from '../tasksMockData.json'
@@ -46,6 +48,7 @@ class App extends Component {
             <BrowserRouter>
             <div className='App'>
                 <Navbar />
+                {this.props.alert && <Alert />}
             <Switch>
                 
                 <Route exact path='/' component={ScrumDesk}/>
@@ -63,13 +66,15 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        tasks: state.tasks
+        tasks: state.tasks,
+        alert: state.alert,
     }
   }
   
   const mapDispatchToProps = (dispatch) => {
     return {
-        tasksSet: (tasks) => { dispatch(tasksSet(tasks)) }
+        tasksSet: (tasks) => { dispatch(tasksSet(tasks)) },
+        setAlert: (alert) => { dispatch(setAlert(alert)) },
     }
   }
 

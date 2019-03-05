@@ -1,5 +1,6 @@
 
 const initState = {
+    user: '',
     isLoggedIn: false,
     alert: null,
     scrumDesk:{
@@ -7,7 +8,7 @@ const initState = {
         processing: [],
         done: [],
     },
-    tasks: []
+    tasks: [],
 }
 
 let getTasksByStatus = (tasks, status)=>{
@@ -19,7 +20,15 @@ const rootReducer = (state = initState, action) => {
     if (action.type === 'AUTH') {
         return {
             ...state,
-            isLoggedIn: action.isLoggedIn
+            isLoggedIn: action.authData.isLoggedIn,
+            user: action.authData.login,
+        }
+    }
+
+    if (action.type === 'SET_ALERT') {
+        return {
+            ...state,
+            alert: action.alert,
         }
     }
 
@@ -33,7 +42,7 @@ const rootReducer = (state = initState, action) => {
         return {
             ...state,
             scrumDesk: newScrumDesk,
-            tasks: action.tasks
+            tasks: action.tasks,
         }
     }
 
@@ -56,13 +65,13 @@ const rootReducer = (state = initState, action) => {
         return {
             ...state,
             scrumDesk: newScrumDesk,
-            tasks: newTasks
+            tasks: newTasks,
         }
     }
 
 
     return {
-        ...state
+        ...state,
     }
 }
 

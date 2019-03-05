@@ -1,6 +1,6 @@
-export const auth = (isLoggedIn) => {
+export const auth = (authData) => {
     return {
         type: 'AUTH',
-        isLoggedIn: isLoggedIn
+        authData: authData
     }
 }

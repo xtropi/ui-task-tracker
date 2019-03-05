@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { auth } from './actions/authAction'
 import { loadState, saveState } from './localStorage'
+import { setAlert } from './actions/setAlertAction'
 import Alert from './components/Alert'
+
 
 /*MOCKDATA->*/
 import {usersMock} from '../usersMockData.json'
@@ -12,8 +14,6 @@ class Register extends Component {
     state = {
         login: "",
         pass: "",
-        isLoggedIn: false,
-        alert: null
     }
 
     componentDidMount(){
@@ -42,19 +42,20 @@ class Register extends Component {
         })
 
         if (matched) { 
-            return this.setState({isLoggedIn: true, alert: null},()=>{
+            return this.setState({user: matched, isLoggedIn: true},()=>{
                 //saving into localStorage
                  /*
                     maybe would be better to use sessionStorage
                  */
-                let {isLoggedIn, alert} = this.state
-                saveState({isLoggedIn, alert})
-                this.props.auth(this.state.isLoggedIn)
+                let {user, isLoggedIn} = this.state
+                let {login} = user
+                saveState({login, isLoggedIn})
+                this.props.auth(loadState())
             })
         }
 
-        if (this.state.isLoggedIn === false) {
-            return this.setState({...this.state, alert: "danger"})
+        if (this.props.isLoggedIn === false) {
+            this.props.setAlert("AUTH_FAIL")
         }
         //#### <- AUTH MOCKUP ####
     }
@@ -66,10 +67,9 @@ class Register extends Component {
 
     render(){
         return(
-            <div className="Register row">
+            <div className="Register row no-gutters" >
                 <form className="mx-auto my-auto text-center w-25" onSubmit={this.handleSubmit}>
                 <h1 className="form-group text-center font-weight-bold">Task tracker</h1>
-                {this.state.alert != null && <Alert type="danger"/>}
                 <div className="form-group">
                     <input name="login" onChange={this.handleInput} value={this.state.login} type="login" className="form-control" id="exampleInputLogin1" aria-describedby="emailHelp" placeholder="Enter login"/>
                 </div>
@@ -78,6 +78,7 @@ class Register extends Component {
                 </div>
                 <button type="submit" className="btn btn-primary">Sign in</button>
                 </form>
+                {this.props.alert && <Alert />}
             </div>
         )
 
@@ -86,13 +87,15 @@ class Register extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        isLoggedIn: state.isLoggedIn
+        isLoggedIn: state.isLoggedIn,
+        alert: state.alert,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        auth: (isLoggedIn) => { dispatch(auth(isLoggedIn)) }
+        auth: (authData) => { dispatch(auth(authData)) },
+        setAlert: (alert) => { dispatch(setAlert(alert)) },
     }
 }
 
