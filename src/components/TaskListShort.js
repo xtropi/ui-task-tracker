@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { taskChange } from '../actions/taskChangeAction'
 import { setAlert } from '../actions/setAlertAction'
 import { tasksSet } from '../actions/tasksSetAction'
+import { representationChange } from '../actions/representationChangeAction'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // a little function to help with reordering the result
 let reorder = (sort, type)=>{
@@ -89,11 +91,10 @@ let reorder = (sort, type)=>{
 }
 
 
-class TaskList extends Component {
+class TaskListShort extends Component {
     state = {
         sort: null,
         type: false,
-
     }
 
     handleClick = (event) => {
@@ -140,10 +141,75 @@ class TaskList extends Component {
             <table className="table table-bordered">
                 <thead className="thead-light">
                     <tr>
-                    <th scope="col">id<button>^</button></th>
-                    <th scope="col">Title<button name='byTitle' onClick={this.handleClick}>{(this.state.type && this.state.sort=='byTitle')  ? '^' : 'v'}</button></th>
-                    <th scope="col">Description<button>^</button></th>
-                    <th scope="col">Priority<button name='byPriority' onClick={this.handleClick}>{(this.state.type && this.state.sort=='byPriority')  ? '^' : 'v'}</button></th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            id
+                            <button className='hidden' name='byId' onClick={this.handleClick}></button>
+                            <div className='ml-1'>
+                                <FontAwesomeIcon icon="sort" />
+                            </div>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            Title
+                            <button className='hidden' name='byTitle' onClick={this.handleClick}></button>
+                            <div className='ml-1'>
+                                <FontAwesomeIcon icon="sort" />
+                            </div>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            Description
+                            <button className='hidden' >^</button>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            Date
+                            <button className='hidden' name='byDate' onClick={this.handleClick}></button>
+                            <div className='ml-1'>
+                                <FontAwesomeIcon icon="sort" />
+                            </div>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            Priority
+                            <button className='hidden' name='byPriority' onClick={this.handleClick}></button>
+                            <div className='ml-1'>
+                                <FontAwesomeIcon icon="sort" />
+                            </div>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            pTime
+                            <button className='hidden' name='byValue' onClick={this.handleClick}></button>
+                            <div className='ml-1'>
+                                <FontAwesomeIcon icon="sort" />
+                            </div>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            fTime
+                            <button className='hidden' name='byValue' onClick={this.handleClick}></button>
+                            <div className='ml-1'>
+                                <FontAwesomeIcon icon="sort" />
+                            </div>
+                            </label>
+                        </th>
+                        <th scope="col">
+                            <label style={{display: 'inline-flex', margin: '0px'}}>
+                            Status
+                            <button className='hidden' name='byStatus' onClick={this.handleClick}></button>
+                            <div className='ml-1'>
+                                <FontAwesomeIcon icon="sort" />
+                            </div>
+                            </label>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -154,7 +220,11 @@ class TaskList extends Component {
                                 <td scope="row">{task.id}</td>
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>
+                                <td>{task.date}</td>
                                 <td>{task.priority}</td>
+                                <td>{task.pTime}</td>
+                                <td>{task.fTime}</td>
+                                <td>{task.status}</td>
                             </tr>
 
                         )
@@ -177,6 +247,7 @@ const mapStateToProps = (state) => {
         tasks: state.tasks,
         scrumDesk: state.scrumDesk,
         alert: state.alert,
+        representation: state.representation,
     }
   }
   
@@ -185,7 +256,8 @@ const mapStateToProps = (state) => {
         taskChange: (task) => { dispatch(taskChange(task)) },
         tasksSet: (tasks) => { dispatch(tasksSet(tasks)) },
         setAlert: (alert) => { dispatch(setAlert(alert)) },
+        representationChange: (representation) => { dispatch(representationChange(representation)) },
     }
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TaskList)
+export default connect(mapStateToProps, mapDispatchToProps)(TaskListShort)

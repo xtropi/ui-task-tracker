@@ -9,6 +9,7 @@ const initState = {
         done: [],
     },
     tasks: [],
+    representation: 'full',
 }
 
 let getTasksByStatus = (tasks, status)=>{
@@ -46,6 +47,13 @@ const rootReducer = (state = initState, action) => {
         return {
             ...state,
             alert: action.alert,
+        }
+    }
+
+    if (action.type === 'REPRESENTATION_CHANGE') {
+        return {
+            ...state,
+            representation: action.representation,
         }
     }
 

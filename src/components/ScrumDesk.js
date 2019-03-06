@@ -173,9 +173,9 @@ class ScrumDesk extends Component {
                         >
                         <div className="card-header mb-2" style={getColoumnStyle().title}>Planning</div>
                          {/* Coloumns of cards */}
-                        {this.props.scrumDesk.planning.map((item, index) => 
-                          (draggableCard(item, index))
-                        )}
+                         {this.props.private ? // Public/Private desk
+                          this.props.scrumDesk.planning.map((item, index) => (item.user==this.props.user && draggableCard(item, index)) ) 
+                          : this.props.scrumDesk.planning.map((item, index) => (draggableCard(item, index)) ) }
 
                         {provided.placeholder}
                         </div>
@@ -192,9 +192,9 @@ class ScrumDesk extends Component {
                         >
                         <div className="card-header mb-2" style={getColoumnStyle().title}>Processing</div>
                         {/* Coloumns of cards */}
-                        {this.props.scrumDesk.processing.map((item, index) => 
-                          (draggableCard(item, index))
-                        )}
+                        {this.props.private ? // Public/Private desk
+                          this.props.scrumDesk.processing.map((item, index) => (item.user==this.props.user && draggableCard(item, index)) ) 
+                          : this.props.scrumDesk.processing.map((item, index) => (draggableCard(item, index)) ) }
                         
                         {provided.placeholder}
                         </div>
@@ -211,9 +211,9 @@ class ScrumDesk extends Component {
                         >
                         <div className="card-header mb-2" style={getColoumnStyle().title}>Done</div>
                         {/* Coloumns of cards */}
-                        {this.props.scrumDesk.done.map((item, index) => 
-                          (draggableCard(item, index))
-                        )}
+                        {this.props.private ? // Public/Private desk
+                          this.props.scrumDesk.done.map((item, index) => (item.user==this.props.user && draggableCard(item, index)) ) 
+                          : this.props.scrumDesk.done.map((item, index) => (draggableCard(item, index)) ) }
 
                         {provided.placeholder}
                         </div>

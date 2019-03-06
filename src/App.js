@@ -1,13 +1,18 @@
 import React, {Component} from 'react'
 import Navbar from './components/Navbar'
-import ScrumDesk from './components/ScrumDesk'
+import Main from './components/Main'
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
-import TaskList from './components/TaskList'
+import MyTasks from './components/MyTasks'
 import Logout from './components/Logout'
 import { connect } from 'react-redux'
 import { tasksSet } from './actions/tasksSetAction'
 import Alert from './components/Alert'
 import { setAlert } from './actions/setAlertAction'
+
+//fontawesome
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faSort } from '@fortawesome/free-solid-svg-icons'
+library.add(faSort)
 
 /*MOCKDATA->*/
 import {tasks as tasksMock} from '../tasksMockData.json'
@@ -35,8 +40,8 @@ class App extends Component {
                 {this.props.alert && <Alert />}
             <Switch>
                 
-                <Route exact path='/' component={ScrumDesk}/>
-                <Route path='/tasklist' component={TaskList}/>
+                <Route exact path='/' component={Main}/>
+                <Route path='/mytasks' component={MyTasks}/>
                 <Route path='/logout' component={Logout}/>
 
             </Switch>
