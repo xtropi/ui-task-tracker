@@ -4,9 +4,102 @@ import { taskChange } from '../actions/taskChangeAction'
 import { setAlert } from '../actions/setAlertAction'
 import { tasksSet } from '../actions/tasksSetAction'
 
-class TaskList extends Component {
-    componentDidMount(){
+// a little function to help with reordering the result
+let reorder = (sort, type)=>{
 
+    // Ascending
+    let reorderByPriorityAsc = (taskA, taskB) => {
+        let numPriority = (text)=>{
+          if (text == 'high') return 0
+          if (text == 'medium') return 1
+          if (text == 'low') return 2
+          return 0
+        }
+        let aPriority = numPriority(taskA.priority)
+        let bPriority = numPriority(taskB.priority)
+        return aPriority-bPriority;
+    }
+    
+    let reorderByTitleAsc = (taskA, taskB) => {
+        if(taskA.title < taskB.title) { return -1 }
+        if(taskA.title > taskB.title) { return 1 }
+        return 0;
+    }
+
+    let reorderByStatusAsc = (taskA, taskB) => {
+        let numPriority = (text)=>{
+            if (text == 'planning') return 0
+            if (text == 'processing') return 1
+            if (text == 'done') return 2
+          return 0
+        }
+        let aPriority = numPriority(taskA.priority)
+        let bPriority = numPriority(taskB.priority)
+        return aPriority-bPriority;
+    }
+
+    // Descending
+    let reorderByPriorityDesc = (taskA, taskB) => {
+        let numPriority = (text)=>{
+          if (text == 'high') return 2
+          if (text == 'medium') return 1
+          if (text == 'low') return 0
+          return 0
+        }
+        let aPriority = numPriority(taskA.priority)
+        let bPriority = numPriority(taskB.priority)
+        return aPriority-bPriority;
+    }
+    
+    let reorderByTitleDesc = (taskA, taskB) => {
+        if(taskA.title < taskB.title) { return 1 }
+        if(taskA.title > taskB.title) { return -1 }
+        return 0;
+    }
+
+    let reorderByStatusDesc = (taskA, taskB) => {
+        let numPriority = (text)=>{
+            if (text == 'planning') return 2
+            if (text == 'processing') return 1
+            if (text == 'done') return 0
+          return 0
+        }
+        let aPriority = numPriority(taskA.priority)
+        let bPriority = numPriority(taskB.priority)
+        return aPriority-bPriority;
+    }
+
+    if ((sort=='byTitle')&&(type))
+        return reorderByTitleAsc
+
+    if ((sort=='byPriority')&&(type))
+        return reorderByPriorityAsc
+
+    if ((sort=='byStatus')&&(type))
+        return reorderByStatusAsc
+
+    if ((sort=='byTitle')&&(!type))
+        return reorderByTitleDesc
+
+    if ((sort=='byPriority')&&(!type))
+        return reorderByPriorityDesc
+
+    if ((sort=='byStatus')&&(!type))
+        return reorderByStatusDesc
+}
+
+
+class TaskList extends Component {
+    state = {
+        sort: null,
+        type: false,
+
+    }
+
+    handleClick = (event) => {
+        event.preventDefault()
+        console.log(this.state.type)
+        this.setState({sort: event.currentTarget.name, type: !this.state.type})
     }
 
     render(){
@@ -15,27 +108,27 @@ class TaskList extends Component {
         return(
             <div style={{margin: '20px'}}>
             <form>
-            <div class="form-inline mb-3">
-                <div class="input-group input-group-sm mr-2 ml-2">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm">Title</span>
+            <div className="form-inline mb-3">
+                <div className="input-group input-group-sm mr-2 ml-2">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="input_title">Title</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"/>
+                    <input type="text" className="form-control" aria-label="Small" aria-describedby="input_title"/>
                 </div>
                 
-                <div class="input-group input-group-sm mr-2 ml-2">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm">Description</span>
+                <div className="input-group input-group-sm mr-2 ml-2">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="input_description">Description</span>
                     </div>
-                    <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"/>
+                    <input type="text" className="form-control" aria-label="Small" aria-describedby="input_description"/>
                 </div>
                 
-                <div class="input-group input-group-sm mr-2 ml-2">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Priority</label>
+                <div className="input-group input-group-sm mr-2 ml-2">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text" id="input_priority">Priority</span>
                     </div>
-                    <select class="custom-select" id="inputGroupSelect01">
-                        <option selected>All</option>
+                    <select className="custom-select" id="inputGroupSelect01" aria-label="Small" aria-describedby="input_priority">
+                        <option defaultValue>All</option>
                         <option value="1">High</option>
                         <option value="2">Medium</option>
                         <option value="3">Low</option>
@@ -44,20 +137,20 @@ class TaskList extends Component {
 
                 </div>
             </form>
-            <table class="table table-bordered">
-                <thead class="thead-light">
+            <table className="table table-bordered">
+                <thead className="thead-light">
                     <tr>
                     <th scope="col">id<button>^</button></th>
-                    <th scope="col">Title<button>^</button></th>
+                    <th scope="col">Title<button name='byTitle' onClick={this.handleClick}>{(this.state.type && this.state.sort=='byTitle')  ? '^' : 'v'}</button></th>
                     <th scope="col">Description<button>^</button></th>
-                    <th scope="col">Priority<button>^</button></th>
+                    <th scope="col">Priority<button name='byPriority' onClick={this.handleClick}>{(this.state.type && this.state.sort=='byPriority')  ? '^' : 'v'}</button></th>
                     </tr>
                 </thead>
                 <tbody>
-                    {myTasks.map((task)=>{
+                    {myTasks.sort(reorder(this.state.sort, this.state.type)).map((task)=>{
 
                         let result = (
-                            <tr>
+                            <tr key={task.id}>
                                 <td scope="row">{task.id}</td>
                                 <td>{task.title}</td>
                                 <td>{task.description}</td>

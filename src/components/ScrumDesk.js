@@ -64,7 +64,7 @@ let draggableCard = (item, index)=>{
   let result = (
     <Draggable key={item.id} draggableId={item.id} index={index}>
       {(provided, snapshot) => (
-        <div class="row mb-2 justify-content-center no-gutters">
+        <div className="row mb-2 justify-content-center no-gutters">
         <div
           // D&D params, do not touch this
           ref={provided.innerRef}

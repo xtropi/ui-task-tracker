@@ -19,27 +19,11 @@ class App extends Component {
 
     componentDidMount(){
         // TASKS DATA MOCKUP ->
-          /* 
+            /* 
             need to be replaced with data fetching from real server 
-          */
-
-        let addedContent = tasksMock.map((task)=>{
-            let content = (
-                <div className="card text-white bg-danger mb-3">
-                    <div className="card-header" style={{fontWeight: 'bold'}}>{task.title}</div>
-                    <div class="card-body">
-                        <div>User: {task.user}</div>
-                    </div>
-                </div>
-            )
-            let result = {...task, content: content}
-            return result
-            })
-
+            */
+        this.props.tasksSet(tasksMock)
         // <- TASKS DATA MOCKUP
-    
-        this.props.tasksSet(addedContent)
-
       }
 
     render(){
