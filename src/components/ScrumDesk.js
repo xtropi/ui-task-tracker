@@ -7,23 +7,6 @@ import { setAlert } from '../actions/setAlertAction'
 import { tasksSet } from '../actions/tasksSetAction'
 
 
-
-// a little function to help with reordering the result
-let reorder = (taskA, taskB) => {
-  let numPriority = (text)=>{
-    if (text == 'high') return 0
-    if (text == 'medium') return 1
-    if (text == 'low') return 2
-    return 0
-  }
-
-  let aPriority = numPriority(taskA.priority)
-  let bPriority = numPriority(taskB.priority)
-
-  return aPriority-bPriority;
-}
-
-
 let getCardStyle = (isDragging, draggableStyle, item) => {
 // do not remove item param - may be useful later
   let result = {
@@ -190,7 +173,7 @@ class ScrumDesk extends Component {
                         >
                         <div className="card-header mb-2" style={getColoumnStyle().title}>Planning</div>
                          {/* Coloumns of cards */}
-                        {this.props.scrumDesk.planning.sort(reorder).map((item, index) => 
+                        {this.props.scrumDesk.planning.map((item, index) => 
                           (draggableCard(item, index))
                         )}
 
@@ -209,7 +192,7 @@ class ScrumDesk extends Component {
                         >
                         <div className="card-header mb-2" style={getColoumnStyle().title}>Processing</div>
                         {/* Coloumns of cards */}
-                        {this.props.scrumDesk.processing.sort(reorder).map((item, index) => 
+                        {this.props.scrumDesk.processing.map((item, index) => 
                           (draggableCard(item, index))
                         )}
                         
@@ -228,7 +211,7 @@ class ScrumDesk extends Component {
                         >
                         <div className="card-header mb-2" style={getColoumnStyle().title}>Done</div>
                         {/* Coloumns of cards */}
-                        {this.props.scrumDesk.done.sort(reorder).map((item, index) => 
+                        {this.props.scrumDesk.done.map((item, index) => 
                           (draggableCard(item, index))
                         )}
 
