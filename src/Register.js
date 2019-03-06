@@ -16,14 +16,14 @@ class Register extends Component {
         pass: "",
     }
 
-    componentDidMount(){
-        let loadedState = loadState()
+    // componentDidMount(){
+    //     let loadedState = loadState()
         
-        if (loadedState){
-            loadedState.alert = null
-            this.setState(loadedState)
-        }
-    }
+    //     if (loadedState){
+    //         loadedState.alert = null
+    //         this.setState(loadedState)
+    //     }
+    // }
 
     handleSubmit = (e)=>{
         e.preventDefault()
@@ -52,11 +52,10 @@ class Register extends Component {
                 saveState({login, isLoggedIn})
                 this.props.auth(loadState())
             })
-        }
-
-        if (this.props.isLoggedIn === false) {
+        } else {
             this.props.setAlert("AUTH_FAIL")
         }
+
         //#### <- AUTH MOCKUP ####
     }
 

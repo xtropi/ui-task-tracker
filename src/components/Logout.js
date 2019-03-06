@@ -2,17 +2,15 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { auth } from '../actions/authAction'
 import { Route, Redirect } from 'react-router'
-import { loadState, saveState } from '../localStorage'
+import { clearState } from '../localStorage'
 
 class TaskList extends Component {
-    state = {
-        isLoggedIn: false,
-        alert: null
-    }
 
     componentDidMount(){
-        saveState(this.state)
-        this.props.auth(this.state.isLoggedIn)
+        // Logout and empty storage
+        clearState()
+        this.props.auth(false)
+        //this.props.history.push("/");
     }
 
     render(){
