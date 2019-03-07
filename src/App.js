@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
+import config from '../config'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
 import MyTasks from './components/MyTasks'
+import TaskView from './components/TaskView'
 import Logout from './components/Logout'
 import { connect } from 'react-redux'
 import { tasksSet } from './actions/tasksSetAction'
@@ -21,6 +23,7 @@ import {tasks as tasksMock} from '../tasksMockData.json'
 
 
 class App extends Component {
+    
 
     componentDidMount(){
         // TASKS DATA MOCKUP ->
@@ -28,8 +31,11 @@ class App extends Component {
             need to be replaced with data fetching from real server 
             */
         this.props.tasksSet(tasksMock)
+        setInterval(()=>{
+            this.props.tasksSet(tasksMock)
+        }, config.refreshTime)
         // <- TASKS DATA MOCKUP
-      }
+    }
 
     render(){
         return(
@@ -41,8 +47,9 @@ class App extends Component {
             <Switch>
                 
                 <Route exact path='/' component={Main}/>
-                <Route path='/mytasks' component={MyTasks}/>
-                <Route path='/logout' component={Logout}/>
+                <Route exact path='/mytasks' component={MyTasks}/>
+                <Route exact path='/mytasks/:id' component={TaskView} />
+                <Route exact path='/logout' component={Logout}/>
 
             </Switch>
             </div>

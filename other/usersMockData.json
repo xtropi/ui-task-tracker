@@ -1,0 +1,7 @@
+{
+    "usersMock":[
+        {"login":"root","pass":"root"},
+        {"login":"qwerty","pass":"12345"},
+        {"login":"123","pass":"123"}
+    ]
+}

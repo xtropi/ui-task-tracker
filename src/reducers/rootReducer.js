@@ -1,4 +1,3 @@
-
 const initState = {
     user: '',
     isLoggedIn: false,
@@ -88,7 +87,7 @@ const rootReducer = (state = initState, action) => {
             processing: getTasksByStatus(reordered, 'processing'),
             done: getTasksByStatus(reordered, 'done'),
         }
-        
+
         return {
             ...state,
             scrumDesk: newScrumDesk,

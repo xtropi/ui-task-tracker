@@ -11,7 +11,8 @@ let dbPort = "5433"
 let dbString = `${dbType}://${dbAuthName}:${dbAuthPass}@${dbIPAddress}:${dbPort}/${dbName}`
 
 let config = {
-    dbString: dbString
+    dbString: dbString,
+    refreshTime: 5000,
 }
 
 export default config
