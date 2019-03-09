@@ -202,13 +202,31 @@ class TaskListFull extends Component {
         this.setState({...this.state, referrer: event.currentTarget.getAttribute('name')});
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault()
+        // Seraching for voids in tasks array
+        let newTaskNum = 0
+        this.props.tasks.sort(reorder('byId', true)).map((task)=>{
+            if (task.id!=`task-${newTaskNum}`){
+                // Create new task in founded void with lacking id 
+                this.setState({...this.state, referrer: `task-${newTaskNum}`})
+                return
+            } else {
+                newTaskNum++
+            }
+        })
+        
+        // if no voids push new task at the end
+        !this.state.referrer && this.setState({...this.state, referrer: `task-${newTaskNum}`})
+    }
+
     render(){
         let {user, tasks} = this.props
         let myTasks = tasks.filter((task)=>(task.user==user))
         return(
             <div style={{margin: '20px'}}>
             { this.state.referrer && <Redirect to={`/mytasks/${this.state.referrer}`} push/>}
-            <form onSubmit={(event)=>{event.preventDefault()}}>
+            <form onSubmit={this.handleSubmit}>
             <div className="form-inline mb-3">
                 <div className="input-group input-group-sm mr-2 ml-2">
                     <div className="input-group-prepend">
@@ -240,6 +258,7 @@ class TaskListFull extends Component {
                         <option value="planning">Planning</option>
                     </select>
                 </div>
+                <button type="submit" className="btn btn-primary">Create new task</button>
                 </div>
             </form>
             <table className="table table-bordered">

@@ -56,6 +56,7 @@ const rootReducer = (state = initState, action) => {
         }
     }
 
+    // Only for redux, dont send to backend
     if (action.type === 'TASKS_SET') {
         let reordered = action.tasks.sort(reorderByPriority)
         let newScrumDesk = {
@@ -71,8 +72,14 @@ const rootReducer = (state = initState, action) => {
         }
     }
 
+    // Use this for send data to backend 
     if (action.type === 'TASK_CHANGE') {
+
+        // Here needed to send new\changed task to backend
+        // ...
+        //
         
+        // Redux reform
         let newTasks = state.tasks.map((task)=>{
                 if (task.id==action.task.id){
                     task=action.task
