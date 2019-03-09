@@ -1,5 +1,6 @@
 ![alt text](https://raw.githubusercontent.com/iMpLicEMoN/ui-task-tracker/master/other/2019-03-07_01-05-00.png)
-
+![alt text](https://raw.githubusercontent.com/iMpLicEMoN/ui-task-tracker/master/other/scheme.png)
+<br />
 ########### UI Task Tracker ##############
 Обязательные технологии: CSS, HTML, JS-фреймворк (React, Angular или Vue).
 
