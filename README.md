@@ -50,6 +50,6 @@ Material UI, Twitter Bootstrap и др.), a также любые JS-библи�
 
 
 -----------------------------------
-rename config-example.js to config.js
-npm install
-npm run devserver
+1) rename config-example.js to config.js
+2) npm install
+3) npm run devserver
