@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { Redirect } from 'react-router'
 import { connect } from 'react-redux'
 import { taskChange } from '../actions/taskChangeAction'
+import { taskDelete } from '../actions/taskDeleteAction'
 import { setAlert } from '../actions/setAlertAction'
 import { representationChange } from '../actions/representationChangeAction'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -190,15 +191,22 @@ class TaskListShort extends Component {
     	this.setState({...this.state, filter:{...this.state.filter, [event.target.name]: event.target.value}});
     }
 
-    handleClick = (event) => {
+    handleSort = (event) => {
     	event.preventDefault()
     	this.setState({sort: event.currentTarget.name, type: !this.state.type})
     }
 
     handleNavigate = (event) => {
     	event.preventDefault()
-    	this.setState({...this.state, referrer: event.currentTarget.getAttribute('name')});
+    	this.setState({...this.state, referrer: event.currentTarget.getAttribute('name')})
     }
+		
+		handleDelete = (event) => {
+			event.preventDefault()
+			this.props.taskDelete(event.currentTarget.getAttribute('name'))
+			this.props.setAlert('SUCCESS_DELETE')
+		}
+		
 
     handleSubmit = (event) => {
     	event.preventDefault()
@@ -265,7 +273,16 @@ class TaskListShort extends Component {
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
                             Title
-    								<button className='hidden' name='byTitle' onClick={this.handleClick}></button>
+    								<button className='hidden' name='byTitle' onClick={this.handleSort}></button>
+    								<div className='ml-1'>
+    									<FontAwesomeIcon icon='sort' />
+    								</div>
+    							</label>
+    						</th>
+    						<th scope='col' style={{verticalAlign: 'middle'}}>
+    							<label style={{display: 'inline-flex'}}>
+                            Date
+    								<button className='hidden' name='byDate' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
     								</div>
@@ -274,25 +291,7 @@ class TaskListShort extends Component {
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
                             Priority
-    								<button className='hidden' name='byPriority' onClick={this.handleClick}></button>
-    								<div className='ml-1'>
-    									<FontAwesomeIcon icon='sort' />
-    								</div>
-    							</label>
-    						</th>
-    						<th scope='col' style={{verticalAlign: 'middle'}}>
-    							<label style={{display: 'inline-flex'}}>
-                            Plan duration (h)
-    								<button className='hidden' name='byPTime' onClick={this.handleClick}></button>
-    								<div className='ml-1'>
-    									<FontAwesomeIcon icon='sort' />
-    								</div>
-    							</label>
-    						</th>
-    						<th scope='col' style={{verticalAlign: 'middle'}}>
-    							<label style={{display: 'inline-flex'}}>
-                            Fact duration (h)
-    								<button className='hidden' name='byFTime' onClick={this.handleClick}></button>
+    								<button className='hidden' name='byPriority' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
     								</div>
@@ -301,10 +300,15 @@ class TaskListShort extends Component {
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
                             Status
-    								<button className='hidden' name='byStatus' onClick={this.handleClick}></button>
+    								<button className='hidden' name='byStatus' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
     								</div>
+    							</label>
+    						</th>
+    						<th scope='col' style={{verticalAlign: 'middle'}}>
+    							<label style={{display: 'inline-flex'}}>
+                    Delete
     							</label>
     						</th>
     					</tr>
@@ -315,21 +319,25 @@ class TaskListShort extends Component {
     						let result = (
 
     							<tr key={task.id} 
-    								name={task.id} 
-    								onClick={this.handleNavigate}
     								onMouseEnter={(e)=>{e.currentTarget.classList.add('table-active')}}
     								onMouseLeave={(e)=>{e.currentTarget.classList.remove('table-active')}}
     							>
-    								<td>{task.title}</td>
-    								<td>{task.priority}</td>
-    								<td>{task.pTime}</td>
-    								<td>{task.fTime}</td>
-    								<td>{task.status}</td>
+    								<td name={task.id} onClick={this.handleNavigate}>{task.title}</td>
+    								<td name={task.id} onClick={this.handleNavigate}>{dateFormat}</td>
+    								<td name={task.id} onClick={this.handleNavigate}>{task.priority}</td>
+    								<td name={task.id} onClick={this.handleNavigate}>{task.status}</td>
+    								<td name={task.id} onClick={this.handleDelete}>    									
+    									<label style={{display: 'inline-flex'}}>
+    										<div className='ml-1'>
+    											<FontAwesomeIcon icon='trash' />
+    										</div>
+    									</label>
+    								</td>
     							</tr>
 
 
     						)
-
+                        
     						// Filter
     						if (!task.title.toLowerCase().includes(this.state.filter.title.toLowerCase()))
     							return null
@@ -366,6 +374,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		taskChange: (task) => { dispatch(taskChange(task)) },
+		taskDelete: (task) => { dispatch(taskDelete(task)) },
 		setAlert: (alert) => { dispatch(setAlert(alert)) },
 		representationChange: (representation) => { dispatch(representationChange(representation)) },
 	}

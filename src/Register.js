@@ -50,6 +50,7 @@ class Register extends Component {
     			let {login} = user
     			saveState({login, isLoggedIn})
     			this.props.auth(loadState())
+    			this.props.setAlert('LOGIN')
     		})
     	} else {
     		this.props.setAlert('AUTH_FAIL')

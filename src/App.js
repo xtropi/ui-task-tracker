@@ -14,7 +14,9 @@ import { setAlert } from './actions/setAlertAction'
 //fontawesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSort } from '@fortawesome/free-solid-svg-icons'
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
 library.add(faSort)
+library.add(faTrash)
 
 /*MOCKDATA->*/
 import {tasks as tasksMock} from '../tasksMockData.json'

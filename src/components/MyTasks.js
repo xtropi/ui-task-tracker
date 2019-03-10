@@ -19,21 +19,21 @@ class MyTasks extends Component {
     render(){
     	let result
 
-    	if (this.props.representation=='full') 
+    	if (this.props.representation=='scrumDesk') 
     		result = (
     			<div className='MyTasks'>
     				<div className='btn-group btn-group-toggle ml-5 mt-3 mb-3' data-toggle='buttons'>
     					<label className='btn btn-secondary active'>
-    						<input type='radio' name='representation' id='full' autoComplete='off' onClick={this.handleClick} /> Full
+    						<input type='radio' name='representation' id='scrumDesk' autoComplete='off' onClick={this.handleClick}/> My Desk
     					</label>
     					<label className='btn btn-secondary '>
     						<input type='radio' name='representation' id='short' autoComplete='off' onClick={this.handleClick} /> Short
     					</label>
-    					<label className='btn btn-secondary'>
-    						<input type='radio' name='representation' id='scrumDesk' autoComplete='off' onClick={this.handleClick}/> ScrumDesk
+    					<label className='btn btn-secondary '>
+    						<input type='radio' name='representation' id='full' autoComplete='off' onClick={this.handleClick} /> Full
     					</label>
     				</div>
-    				<TaskListFull />
+    				<ScrumDesk private={true}/>
     			</div>
     		)
 
@@ -41,35 +41,35 @@ class MyTasks extends Component {
     		result = (
     			<div className='MyTasks'>
     				<div className='btn-group btn-group-toggle ml-5 mt-3 mb-3' data-toggle='buttons'>
-    					<label className='btn btn-secondary '>
-    						<input type='radio' name='representation' id='full' autoComplete='off' onClick={this.handleClick} /> Full
+    					<label className='btn btn-secondary'>
+    						<input type='radio' name='representation' id='scrumDesk' autoComplete='off' onClick={this.handleClick}/> My Desk
     					</label>
     					<label className='btn btn-secondary active'>
     						<input type='radio' name='representation' id='short' autoComplete='off' onClick={this.handleClick} /> Short
     					</label>
-    					<label className='btn btn-secondary'>
-    						<input type='radio' name='representation' id='scrumDesk' autoComplete='off' onClick={this.handleClick}/> ScrumDesk
+    					<label className='btn btn-secondary '>
+    						<input type='radio' name='representation' id='full' autoComplete='off' onClick={this.handleClick} /> Full
     					</label>
     				</div>
     				<TaskListShort />
     			</div>
     		)
 
-    	if (this.props.representation=='scrumDesk') 
+    	if (this.props.representation=='full') 
     		result = (
     			<div className='MyTasks'>
     				<div className='btn-group btn-group-toggle ml-5 mt-3 mb-3' data-toggle='buttons'>
-    					<label className='btn btn-secondary '>
-    						<input type='radio' name='representation' id='full' autoComplete='off' onClick={this.handleClick} /> Full
-    					</label>
     					<label className='btn btn-secondary'>
-    						<input type='radio' name='representation' id='short' autoComplete='off' onClick={this.handleClick}/> Short
+    						<input type='radio' name='representation' id='scrumDesk' autoComplete='off' onClick={this.handleClick}/> My Desk
+    					</label>
+    					<label className='btn btn-secondary '>
+    						<input type='radio' name='representation' id='short' autoComplete='off' onClick={this.handleClick} /> Short
     					</label>
     					<label className='btn btn-secondary active'>
-    						<input type='radio' name='representation' id='scrumDesk' autoComplete='off' onClick={this.handleClick} /> ScrumDesk
+    						<input type='radio' name='representation' id='full' autoComplete='off' onClick={this.handleClick} /> Full
     					</label>
     				</div>
-    				<ScrumDesk private={true}/>
+						<TaskListFull />
     			</div>
     		)
         
