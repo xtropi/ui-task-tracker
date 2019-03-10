@@ -8,33 +8,25 @@ import { loadState, saveState } from './localStorage'
 
 class Auth extends Component {
 
-    componentDidMount(){
-        // Auto auth with session (need to rework)
-        let loadedState = loadState()
-        
-        if (loadedState){
-            loadedState.alert = null
-            this.props.auth(loadedState)
-        }
-    }
+	componentDidMount(){
+		// Auto auth with session (need to rework)
+		let loadedState = loadState()
+		if (loadedState){
+			loadedState.alert = null
+			this.props.auth(loadedState)
+		}
+	}
 
-    render(){
-        return this.props.isLoggedIn ? <App/> : <Register/>
-    }
+	render(){
+		return this.props.isLoggedIn ? <App/> : <Register/>
+	}
 }
 
 const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.isLoggedIn,
-        alert: state.alert,
-    }
+	return {
+		isLoggedIn: state.isLoggedIn,
+		alert: state.alert,
+	}
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        auth: (isLoggedIn) => { dispatch(auth(isLoggedIn)) },
-        setAlert: (alert) => { dispatch(setAlert(alert)) },
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Auth)
+export default connect(mapStateToProps, { auth, setAlert })(Auth)

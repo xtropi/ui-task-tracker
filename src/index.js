@@ -13,10 +13,8 @@ const store = createStore(rootReducer);
 
 
 ReactDOM.render(
-  <Provider store={store}>
-  <Auth />
-  </Provider>,
-  document.getElementById('app')
+	<Provider store={store}>
+		<Auth />
+	</Provider>,
+	document.getElementById('app')
 );
-
-module.hot.accept();

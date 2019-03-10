@@ -21,57 +21,43 @@ import {tasks as tasksMock} from '../tasksMockData.json'
 /*<-MOCKDATA*/
 
 
-
 class App extends Component {
-    
 
-    componentDidMount(){
-        // TASKS DATA MOCKUP ->
-            /* 
-            need to be replaced with data fetching from real server 
-            */
-        this.props.tasksSet(tasksMock)
-        setInterval(()=>{
-            this.props.tasksSet(tasksMock)
-        }, config.refreshTime)
-        // <- TASKS DATA MOCKUP
-    }
+	componentDidMount(){
+		// TASKS DATA MOCKUP ->
+		/* 
+			need to be replaced with data fetching from real server 
+		*/
+		this.props.tasksSet(tasksMock)
+		setInterval(()=>{
+			this.props.tasksSet(tasksMock)
+		}, config.refreshTime)
+		// <- TASKS DATA MOCKUP
+	}
 
-    render(){
-        return(
-
-            <BrowserRouter>
-            <div className='App'>
-                <Navbar />
-                {this.props.alert && <Alert />}
-            <Switch>
-                
-                <Route exact path='/' component={Main}/>
-                <Route exact path='/mytasks' component={MyTasks}/>
-                <Route exact path='/mytasks/:id' component={TaskView} />
-                <Route exact path='/logout' component={Logout}/>
-
-            </Switch>
-            </div>
-            </BrowserRouter>
-
-        )
-
-    }
+	render(){
+		return(
+			<BrowserRouter>
+				<div className='App'>
+					<Navbar />
+					{this.props.alert && <Alert />}
+					<Switch>
+						<Route exact path='/' component={Main}/>
+						<Route exact path='/mytasks' component={MyTasks}/>
+						<Route exact path='/mytasks/:id' component={TaskView} />
+						<Route exact path='/logout' component={Logout}/>
+					</Switch>
+				</div>
+			</BrowserRouter>
+		)
+	}
 }
 
 const mapStateToProps = (state) => {
-    return {
-        tasks: state.tasks,
-        alert: state.alert,
-    }
-  }
-  
-  const mapDispatchToProps = (dispatch) => {
-    return {
-        tasksSet: (tasks) => { dispatch(tasksSet(tasks)) },
-        setAlert: (alert) => { dispatch(setAlert(alert)) },
-    }
-  }
+	return {
+		tasks: state.tasks,
+		alert: state.alert,
+	}
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps, { setAlert, tasksSet })(App)
