@@ -69,7 +69,7 @@ class MyTasks extends Component {
     						<input type='radio' name='representation' id='full' autoComplete='off' onClick={this.handleClick} /> Full
     					</label>
     				</div>
-						<TaskListFull />
+    				<TaskListFull />
     			</div>
     		)
         

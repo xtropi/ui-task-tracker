@@ -4,7 +4,7 @@ import { auth } from './actions/authAction'
 import { setAlert } from './actions/setAlertAction'
 import App from './App'
 import Register from './Register'
-import { loadState, saveState } from './localStorage'
+import { loadState, saveState } from './sessionStorage'
 
 class Auth extends Component {
 

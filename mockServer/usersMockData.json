@@ -1,0 +1,7 @@
+{
+    "usersMock":[
+        {"login":"root","passHash":"$2a$10$Dlr3LzJvNPnCnhtBeSyA8.4qn5QI.eE9lGxG8brXgPKD0DYEByAwy"},
+        {"login":"qwerty","passHash":"$2a$10$Dlr3LzJvNPnCnhtBeSyA8.z3eUtuAxgHpXxjdhQIKc0YMHQbArKFu"},
+        {"login":"123","passHash":"$2a$10$Dlr3LzJvNPnCnhtBeSyA8.72c466VHKA1hZ69TcWXwQVnL.wLRC0y"}
+    ]
+}

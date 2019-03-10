@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import { Redirect } from 'react-router'
 import { connect } from 'react-redux'
-import { taskChange } from '../actions/taskChangeAction'
-import { taskDelete } from '../actions/taskDeleteAction'
+import axios from 'axios'
+import { config } from '../../config'
+import { tasksSet } from '../actions/tasksSetAction'
 import { setAlert } from '../actions/setAlertAction'
 import { representationChange } from '../actions/representationChangeAction'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -186,6 +187,15 @@ class TaskListShort extends Component {
     	},
     }
 
+		taskDelete = async (authData, id) => {
+			let result = await axios.post(`${config.beString}${config.beServiceNames.taskDelete}`, {authData: authData, id: id})
+			if (result.data.msg=='Success'){
+				this.props.tasksSet(result.data.newTasks)
+			} else {
+				this.props.setAlert('GET_TASKS_FAIL')
+			}
+		}
+
     handleChange = (event) => {
     	event.preventDefault()
     	this.setState({...this.state, filter:{...this.state.filter, [event.target.name]: event.target.value}});
@@ -203,7 +213,7 @@ class TaskListShort extends Component {
 		
 		handleDelete = (event) => {
 			event.preventDefault()
-			this.props.taskDelete(event.currentTarget.getAttribute('name'))
+			this.taskDelete({login:this.props.user, passHash: this.props.passHash}, event.currentTarget.getAttribute('name'))
 			this.props.setAlert('SUCCESS_DELETE')
 		}
 		
@@ -364,6 +374,7 @@ class TaskListShort extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		passHash: state.passHash,
 		tasks: state.tasks,
 		scrumDesk: state.scrumDesk,
 		alert: state.alert,
@@ -373,8 +384,7 @@ const mapStateToProps = (state) => {
   
 const mapDispatchToProps = (dispatch) => {
 	return {
-		taskChange: (task) => { dispatch(taskChange(task)) },
-		taskDelete: (task) => { dispatch(taskDelete(task)) },
+		tasksSet: (tasks) => { dispatch(tasksSet(tasks)) },
 		setAlert: (alert) => { dispatch(setAlert(alert)) },
 		representationChange: (representation) => { dispatch(representationChange(representation)) },
 	}

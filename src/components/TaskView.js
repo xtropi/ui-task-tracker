@@ -1,8 +1,9 @@
 /* eslint-disable indent */
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { taskChange } from '../actions/taskChangeAction'
-import { taskCreate } from '../actions/taskCreateAction'
+import axios from 'axios'
+import { config } from '../../config'
+import { tasksSet } from '../actions/tasksSetAction'
 import { setAlert } from '../actions/setAlertAction'
 
 class TaskView extends Component {
@@ -42,17 +43,34 @@ class TaskView extends Component {
     		task.id==this.props.match.params.id && 
                this.setState({...this.state, task: task, new: false})
     	})
-        
-    }
+		}
+		
+		taskChange = async (authData, task) => {
+			let result = await axios.post(`${config.beString}${config.beServiceNames.taskChange}`, {authData: authData, task: task})
+			if (result.data.msg=='Success'){
+				this.props.tasksSet(result.data.newTasks)
+			} else {
+				this.props.setAlert('GET_TASKS_FAIL')
+			}
+		}
+
+		taskCreate = async (authData, task) => {
+			let result = await axios.post(`${config.beString}${config.beServiceNames.taskCreate}`, {authData: authData, task: task})
+			if (result.data.msg=='Success'){
+				this.props.tasksSet(result.data.newTasks)
+			} else {
+				this.props.setAlert('GET_TASKS_FAIL')
+			}
+		}
 
     handleSubmit = (event) => {
 			event.preventDefault()
     	if (event.currentTarget.name=='change'){
-    		this.props.taskChange(this.state.task)
+    		this.taskChange({login:this.props.user, passHash: this.props.passHash}, this.state.task)
     		this.props.setAlert('SUCCESS_CHANGE')
     	}
     	if (event.currentTarget.name=='create'){
-    		this.props.taskCreate(this.state.task)
+    		this.taskCreate({login:this.props.user, passHash: this.props.passHash}, this.state.task)
     		this.props.setAlert('SUCCESS_CREATE')
     	}
     }
@@ -133,6 +151,7 @@ class TaskView extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		passHash: state.passHash,
 		tasks: state.tasks,
 		scrumDesk: state.scrumDesk,
 		alert: state.alert,
@@ -142,8 +161,7 @@ const mapStateToProps = (state) => {
   
 const mapDispatchToProps = (dispatch) => {
 	return {
-		taskChange: (task) => { dispatch(taskChange(task)) },
-		taskCreate: (task) => { dispatch(taskCreate(task)) },
+		tasksSet: (tasks) => { dispatch(tasksSet(tasks)) },
 		setAlert: (alert) => { dispatch(setAlert(alert)) },
 	}
 }

@@ -50,6 +50,14 @@ Material UI, Twitter Bootstrap и др.), a также любые JS-библи�
 
 
 -----------------------------------
-1) rename config-example.js to config.js
-2) npm install
+// Install dependencies
+1) npm install 
+
+// Run backend mockServer 
+2) npm start
+
+// Run ui-task-tracker
 3) npm run devserver
+
+// Enjoy
+4) http://localhost:8080/

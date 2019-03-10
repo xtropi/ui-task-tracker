@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { auth } from '../actions/authAction'
 import { Redirect } from 'react-router'
-import { clearState } from '../localStorage'
+import { clearState } from '../sessionStorage'
 import { setAlert } from '../actions/setAlertAction'
 
 class TaskList extends Component {

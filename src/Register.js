@@ -1,62 +1,46 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import { config } from '../config'
+import bcrypt from 'bcryptjs'
 import { auth } from './actions/authAction'
-import { loadState, saveState } from './localStorage'
+import axios from 'axios'
+import { loadState, saveState } from './sessionStorage'
 import { setAlert } from './actions/setAlertAction'
 import Alert from './components/Alert'
-
-/*MOCKDATA->*/
-import {usersMock} from '../usersMockData.json'
-/*<-MOCKDATA*/
 
 class Register extends Component {
     state = {
     	login: '',
     	pass: '',
     }
-
-    // componentDidMount(){
-    //     let loadedState = loadState()
-        
-    //     if (loadedState){
-    //         loadedState.alert = null
-    //         this.setState(loadedState)
-    //     }
-    // }
-
-    handleSubmit = (e)=>{
-    	e.preventDefault()
-
-    	//#### AUTH MOCKUP -> ####
-    	/* 
-            need to be changed to real server-based auth request through fetch(),
-            set JWT to localStorage\sessionStorage
-            and pass user based on token
-        */ 
-
-    	let matched = usersMock.find((user)=>{ 
-    		if ((user.login===this.state.login)&&(user.pass===this.state.pass)){
-    			return user
-    		}
-    	})
-
-    	if (matched) { 
-    		return this.setState({user: matched, isLoggedIn: true},()=>{
-    			//saving into localStorage
-    			/*
-                    maybe would be better to use sessionStorage
-                 */
-    			let {user, isLoggedIn} = this.state
-    			let {login} = user
-    			saveState({login, isLoggedIn})
-    			this.props.auth(loadState())
-    			this.props.setAlert('LOGIN')
-    		})
-    	} else {
+		
+		sendAuthData = async (authData) => {
+			let result = await axios.post(`${config.beString}${config.beServiceNames.auth}`, {authData: authData})
+			if (result.data.msg=='Success'){
+				let isLoggedIn = true
+				//saving into sessionStorage
+				let {login} = result.data.authData
+				let {passHash} = result.data.authData
+				saveState({login, passHash, isLoggedIn})
+				//saving into redux storage
+				this.props.auth({login, passHash, isLoggedIn})
+				this.props.setAlert('LOGIN')
+			} else {
     		this.props.setAlert('AUTH_FAIL')
     	}
+		}
 
-    	//#### <- AUTH MOCKUP ####
+    handleSubmit = (e)=>{
+			e.preventDefault()
+			console.log(config)
+    	bcrypt.hash(this.state.pass, config.salt, (err, hash)=>{
+    		if (err){
+    			return console.log(err);
+    		}
+    		//password -> hash;
+    		this.sendAuthData({login:this.state.login, passHash: hash})
+    	})
+    	
     }
 
     handleInput = (e)=>{

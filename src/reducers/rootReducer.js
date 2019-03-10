@@ -18,6 +18,7 @@ let reorderByPriority = (taskA, taskB) => {
 
 const initState = {
 	user: '',
+	passHash: '',
 	isLoggedIn: false,
 	alert: null,
 	scrumDesk:{
@@ -38,6 +39,7 @@ const rootReducer = (state = initState, action) => {
 			...state,
 			isLoggedIn: action.authData.isLoggedIn,
 			user: action.authData.login,
+			passHash: action.authData.passHash,
 		}
 	}
 

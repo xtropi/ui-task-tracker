@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { connect } from 'react-redux'
-import { taskChange } from '../actions/taskChangeAction'
+import axios from 'axios'
+import { config } from '../../config'
+import { tasksSet } from '../actions/tasksSetAction'
 import { setAlert } from '../actions/setAlertAction'
 
 
@@ -125,6 +127,15 @@ let getDoneListStyle = () => ({
 
 class ScrumDesk extends Component {
 
+	taskChange = async (authData, task) => {
+		let result = await axios.post(`${config.beString}${config.beServiceNames.taskChange}`, {authData: authData, task: task})
+		if (result.data.msg=='Success'){
+			this.props.tasksSet(result.data.newTasks)
+		} else {
+			this.props.setAlert('GET_TASKS_FAIL')
+		}
+	}
+
   onDragEnd = (result) =>{
   	const { source, destination, draggableId } = result
 
@@ -144,7 +155,8 @@ class ScrumDesk extends Component {
   			return
   		}
   		let newTask = {...oldTask, status: destination.droppableId}
-  		this.props.taskChange(newTask)
+  		this.taskChange({login:this.props.user, passHash: this.props.passHash}, newTask)
+			
   	}
   }
 
@@ -230,6 +242,7 @@ class ScrumDesk extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user,
+		passHash: state.passHash,
 		tasks: state.tasks,
 		scrumDesk: state.scrumDesk,
 		alert: state.alert,
@@ -238,7 +251,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		taskChange: (task) => { dispatch(taskChange(task)) },
+		tasksSet: (tasks) => { dispatch(tasksSet(tasks)) },
 		setAlert: (alert) => { dispatch(setAlert(alert)) },
 	}
 }

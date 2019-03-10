@@ -26,6 +26,10 @@ class Alert extends Component {
 			label ='Your loginpass is wrong or user does not exist!'
 			type = 'alert-danger'
 			break
+		case 'GET_TASKS_FAIL':
+			label ='Cant get tasks! (Server or connection error)'
+			type = 'alert-danger'
+			break
 		case 'WRONG_USER':
 			label ='No permissions!'
 			type = 'alert-danger'

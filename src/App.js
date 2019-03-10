@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import config from '../config'
+import { config } from '../config'
 import Navbar from './components/Navbar'
 import Main from './components/Main'
 import { BrowserRouter, Route, Switch} from 'react-router-dom'
@@ -9,32 +9,33 @@ import Logout from './components/Logout'
 import { connect } from 'react-redux'
 import { tasksSet } from './actions/tasksSetAction'
 import Alert from './components/Alert'
+import axios from 'axios'
 import { setAlert } from './actions/setAlertAction'
 
-//fontawesome
+//fontAwesome
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faSort } from '@fortawesome/free-solid-svg-icons'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 library.add(faSort)
 library.add(faTrash)
 
-/*MOCKDATA->*/
-import {tasks as tasksMock} from '../tasksMockData.json'
-/*<-MOCKDATA*/
-
 
 class App extends Component {
 
+	recieveTasksData = async () => {
+		let result = await axios.get(`${config.beString}${config.beServiceNames.getTasks}`)
+		if (result.data.msg=='Success'){
+			this.props.tasksSet(result.data.tasks)
+		} else {
+			this.props.setAlert('GET_TASKS_FAIL')
+		}
+	}
+
 	componentDidMount(){
-		// TASKS DATA MOCKUP ->
-		/* 
-			need to be replaced with data fetching from real server 
-		*/
-		this.props.tasksSet(tasksMock)
+		this.recieveTasksData()
 		setInterval(()=>{
-			this.props.tasksSet(tasksMock)
+			this.recieveTasksData()
 		}, config.refreshTime)
-		// <- TASKS DATA MOCKUP
 	}
 
 	render(){
