@@ -1,7 +1,10 @@
 ![alt text](https://raw.githubusercontent.com/iMpLicEMoN/ui-task-tracker/master/other/2019-03-07_01-05-00.png)
 ![alt text](https://raw.githubusercontent.com/iMpLicEMoN/ui-task-tracker/master/other/scheme.png)
 <br />
-########### UI Task Tracker ##############
+-------------------------------
+#### UI Task Tracker
+-------------------------------
+<br/>
 Обязательные технологии: CSS, HTML, JS-фреймворк (React, Angular или Vue).
 
 Допускается использовать: Библиотеки компонентов или CSS фреймворки (Ant Design,
@@ -50,14 +53,24 @@ Material UI, Twitter Bootstrap и др.), a также любые JS-библи�
 
 
 -----------------------------------
-// Install dependencies
-1) npm install 
+Install dependencies
+```sh
+$ npm install 
+```
 
-// Run backend mockServer 
-2) npm start
 
-// Run ui-task-tracker
-3) npm run devserver
+Run backend mockServer in first terminal
+ ```sh
+$ npm start
+```
 
-// Enjoy
-4) http://localhost:8080/
+
+Run ui-task-tracker in second terminal
+```sh
+$ npm run devserver
+```
+
+Open
+```sh
+http://localhost:8080/
+```
