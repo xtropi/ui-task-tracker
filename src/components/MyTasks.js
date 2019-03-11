@@ -10,7 +10,6 @@ import TaskListShort from './TaskListShort'
 
 class MyTasks extends Component {
 
-
     handleClick = (event) => {
     	event.preventDefault()
     	this.props.representationChange(event.currentTarget.id)

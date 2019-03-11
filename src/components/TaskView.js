@@ -1,5 +1,4 @@
-/* eslint-disable indent */
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { config } from '../../config'
@@ -8,17 +7,17 @@ import { setAlert } from '../actions/setAlertAction'
 
 class TaskView extends Component {
     state = {
-			task: {
-				id: '',
-				user: '',
-				title: '',
-				description: '',
-				priority: 'low',
-				pTime: 0,
-				fTime: 0,
-				date: new Date().toJSON(),
-				status: 'planning',
-			},
+    	task: {
+    		id: '',
+    		user: '',
+    		title: '',
+    		description: '',
+    		priority: 'low',
+    		pTime: 0,
+    		fTime: 0,
+    		date: new Date().toJSON(),
+    		status: 'planning',
+    	},
     	new: true,
     }
 
@@ -43,7 +42,7 @@ class TaskView extends Component {
     		task.id==this.props.match.params.id && 
                this.setState({...this.state, task: task, new: false})
     	})
-		}
+    }
 		
 		taskChange = async (authData, task) => {
 			let result = await axios.post(`${config.beString}${config.beServiceNames.taskChange}`, {authData: authData, task: task})
@@ -64,7 +63,7 @@ class TaskView extends Component {
 		}
 
     handleSubmit = (event) => {
-			event.preventDefault()
+    	event.preventDefault()
     	if (event.currentTarget.name=='change'){
     		this.taskChange({login:this.props.user, passHash: this.props.passHash}, this.state.task)
     		this.props.setAlert('SUCCESS_CHANGE')
@@ -85,73 +84,73 @@ class TaskView extends Component {
     		<div>
     			<form name={!this.state.new ? 'change' : 'create'} onSubmit={this.handleSubmit} style={{margin: '20px 100px'}}>
     				<div className='form-row'>
-							<div className='form-group col-md-4'>
+    					<div className='form-group col-md-4'>
     						<label htmlFor='inputDate'>
 									Date
-								</label>
-								<input name='date' disabled='disabled' 
-									value={new Date(this.state.task.date).toLocaleString()} onChange={this.handleChange} 
-									type='text' className='form-control' 
-									id='inputDate'
-									required
-								/>
+    						</label>
+    						<input name='date' disabled='disabled' 
+    							value={new Date(this.state.task.date).toLocaleString()} onChange={this.handleChange} 
+    							type='text' className='form-control' 
+    							id='inputDate'
+    							required
+    						/>
     					</div>
     					<div className='form-group col-md-4'>
     						<label htmlFor='inputId'>
 									Id
-								</label>
-								<input 
-									disabled='disabled' name='id' 
-									value={this.state.task.id} onChange={this.handleChange} 
-									type='text' className='form-control' 
-									id='inputId'
-									required
-								/>
+    						</label>
+    						<input 
+    							disabled='disabled' name='id' 
+    							value={this.state.task.id} onChange={this.handleChange} 
+    							type='text' className='form-control' 
+    							id='inputId'
+    							required
+    						/>
     					</div>
     					<div className='form-group col-md-4'>
     						<label htmlFor='inputUser'>
 									User
-								</label>
-								<input 
-									disabled={!this.state.new && 'disabled'} name='user' 
-									value={this.state.task.user} onChange={this.handleChange} 
-									type='text' className='form-control' 
-									id='inputUser'
-									size='30' minLength='4'
+    						</label>
+    						<input 
+    							disabled={!this.state.new && 'disabled'} name='user' 
+    							value={this.state.task.user} onChange={this.handleChange} 
+    							type='text' className='form-control' 
+    							id='inputUser'
+    							size='30' minLength='4'
     							required
-								/>
+    						/>
     					</div>
 
     				</div>
     				<div className='form-group'>
     					<label htmlFor='inputTitle'>
 								Title
-							</label>
-							<input 
-								name='title' value={this.state.task.title} 
-								onChange={this.handleChange} type='text' 
-								className='form-control' id='inputTitle'
-								size='30' minLength='3'
-								required
-							/>
+    					</label>
+    					<input 
+    						name='title' value={this.state.task.title} 
+    						onChange={this.handleChange} type='text' 
+    						className='form-control' id='inputTitle'
+    						size='30' minLength='3'
+    						required
+    					/>
     				</div>
     				<div className='form-group'>
     					<label htmlFor='inputDescription'>
 								Description
-							</label>
-							<input 
-								name='description' value={this.state.task.description} 
-								onChange={this.handleChange} type='text' 
-								className='form-control' id='inputDescription'
-								size='255' minLength='3'
-								required
-							/>
+    					</label>
+    					<input 
+    						name='description' value={this.state.task.description} 
+    						onChange={this.handleChange} type='text' 
+    						className='form-control' id='inputDescription'
+    						size='255' minLength='3'
+    						required
+    					/>
     				</div>
     				<div className='form-row'>
     					<div className='form-group col-md-3'>
     						<label htmlFor='inputState'>
 									Priority
-								</label>
+    						</label>
     						<select name='priority' value={this.state.task.priority} onChange={this.handleChange} id='inputState' className='form-control'>
     							<option value='high'>High</option>
     							<option value='medium'>Medium</option>
@@ -161,37 +160,37 @@ class TaskView extends Component {
     					<div className='form-group col-md-3'>
     						<label htmlFor='inputState'>
 									Status
-								</label>
+    						</label>
     						<select name='status' value={this.state.task.status} onChange={this.handleChange} id='inputState' className='form-control'>
     							<option value='done'>Done</option>
     							<option value='processing'>Processing</option>
     							<option value='planning'>Planning</option>
     						</select>
     					</div>
-							<div className='form-group col-md-3'>
-								<label htmlFor='inputPTime'>
+    					<div className='form-group col-md-3'>
+    						<label htmlFor='inputPTime'>
 									Plan duration (hours)
-								</label>
-								<input 
-									name='pTime' value={this.state.task.pTime} 
-									onChange={this.handleChange} type='number' 
-									min='0' className='form-control' 
-									id='inputPTime'
-									required
-								/>
-							</div>
-							<div className='form-group col-md-3'>
-								<label htmlFor='inputFTime'>
+    						</label>
+    						<input 
+    							name='pTime' value={this.state.task.pTime} 
+    							onChange={this.handleChange} type='number' 
+    							min='0' className='form-control' 
+    							id='inputPTime'
+    							required
+    						/>
+    					</div>
+    					<div className='form-group col-md-3'>
+    						<label htmlFor='inputFTime'>
 									Fact duration (hours)
-								</label>
-								<input 
-									name='fTime' value={this.state.task.fTime} 
-									onChange={this.handleChange} type='number' 
-									min='0' className='form-control' 
-									id='inputFTime'
-									required
-								/>
-							</div>
+    						</label>
+    						<input 
+    							name='fTime' value={this.state.task.fTime} 
+    							onChange={this.handleChange} type='number' 
+    							min='0' className='form-control' 
+    							id='inputFTime'
+    							required
+    						/>
+    					</div>
     				</div>
 
     				<button 

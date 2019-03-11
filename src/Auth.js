@@ -9,7 +9,7 @@ import { loadState, saveState } from './sessionStorage'
 class Auth extends Component {
 
 	componentDidMount(){
-		// Auto auth with session (need to rework)
+		// Auto auth with session
 		let loadedState = loadState()
 		if (loadedState){
 			loadedState.alert = null

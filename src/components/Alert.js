@@ -4,6 +4,7 @@ import { setAlert } from '../actions/setAlertAction';
 
 class Alert extends Component {
 	componentDidMount() {
+		// Disable alert after N milliseconds
 		setTimeout(() => {
 			this.props.setAlert(null)
 		}, 3000)

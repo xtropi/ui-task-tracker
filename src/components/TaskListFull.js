@@ -10,172 +10,101 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // a little function to help with reordering the result
 let reorder = (sort, type)=>{
+	// Both ascending and descending
+	let direction =
+		type ? 1 : -1
+	if (sort=='byId'){
+		return (taskA, taskB) => {
+			let numIdA = parseInt(taskA.id.split('-')[1], 10)
+			let numIdB = parseInt(taskB.id.split('-')[1], 10)
+			if(numIdA < numIdB) { return -1*direction }
+			if(numIdA > numIdB) { return 1*direction }
+			return 0;
+		}
+	}
+	if ((sort=='byTitle')&&(type)){
+		return (taskA, taskB) => {
+			if(taskA.title < taskB.title) { return -1*direction }
+			if(taskA.title > taskB.title) { return 1*direction }
+			return 0;
+		}
+	}
+	if ((sort=='byDate')&&(type)){
+		return (taskA, taskB) => {
+			let dateA = new Date(taskA.date).getTime()
+			let dateB = new Date(taskB.date).getTime()
+			if(dateA < dateB) { return -1*direction }
+			if(dateA > dateB) { return 1*direction }
+			return 0;
+		}
+	}
+	if ((sort=='byPTime')&&(type)){
+		return (taskA, taskB) => {
+			if(taskA.pTime < taskB.pTime) { return -1*direction }
+			if(taskA.pTime > taskB.pTime) { return 1*direction }
+			return 0;
+		}
+	}
+	if ((sort=='byFTime')&&(type)){
+		return (taskA, taskB) => {
+			if(taskA.fTime < taskB.fTime) { return -1*direction }
+			if(taskA.fTime > taskB.fTime) { return 1*direction }
+			return 0;
+		}
+	}
 
 	// Ascending
-	let reorderByIdAsc = (taskA, taskB) => {
-		let numIdA = parseInt(taskA.id.split('-')[1], 10)
-		let numIdB = parseInt(taskB.id.split('-')[1], 10)
-		if(numIdA < numIdB) { return -1 }
-		if(numIdA > numIdB) { return 1 }
-		return 0;
-	}
-
-	let reorderByPriorityAsc = (taskA, taskB) => {
-		let numPriority = (text)=>{
-			if (text == 'high') return 2
-			if (text == 'medium') return 1
-			if (text == 'low') return 0
-			return 0
-		}
-		let aPriority = numPriority(taskA.priority)
-		let bPriority = numPriority(taskB.priority)
-		return aPriority-bPriority;
-	}
-    
-	let reorderByTitleAsc = (taskA, taskB) => {
-		if(taskA.title < taskB.title) { return -1 }
-		if(taskA.title > taskB.title) { return 1 }
-		return 0;
-	}
-
-	let reorderByDateAsc = (taskA, taskB) => {
-		let dateA = new Date(taskA.date).getTime()
-		let dateB = new Date(taskB.date).getTime()
-		if(dateA < dateB) { return -1 }
-		if(dateA > dateB) { return 1 }
-		return 0;
-	}
-
-	let reorderByPTimeAsc = (taskA, taskB) => {
-		if(taskA.pTime < taskB.pTime) { return -1 }
-		if(taskA.pTime > taskB.pTime) { return 1 }
-		return 0;
-	}
-
-    
-	let reorderByFTimeAsc = (taskA, taskB) => {
-		if(taskA.fTime < taskB.fTime) { return -1 }
-		if(taskA.fTime > taskB.fTime) { return 1 }
-		return 0;
-	}
-
-	let reorderByStatusAsc = (taskA, taskB) => {
-		let numStatus = (text)=>{
-			if (text == 'done') return 2
-			if (text == 'processing') return 1
-			if (text == 'planning') return 0
-			return 0
-		}
-		let a = numStatus(taskA.status)
-		let b = numStatus(taskB.status)
-		return a-b;
-	}
-
-	// Descending
-	let reorderByIdDesc = (taskA, taskB) => {
-		let numIdA = parseInt(taskA.id.split('-')[1], 10)
-		let numIdB = parseInt(taskB.id.split('-')[1], 10)
-		if(numIdA < numIdB) { return 1 }
-		if(numIdA > numIdB) { return -1 }
-		return 0;
-	}
-
-	let reorderByPriorityDesc = (taskA, taskB) => {
-		let numPriority = (text)=>{
-			if (text == 'high') return 0
-			if (text == 'medium') return 1
-			if (text == 'low') return 2
-			return 0
-		}
-		let aPriority = numPriority(taskA.priority)
-		let bPriority = numPriority(taskB.priority)
-		return aPriority-bPriority;
-	}
-    
-	let reorderByTitleDesc = (taskA, taskB) => {
-		if(taskA.title < taskB.title) { return 1 }
-		if(taskA.title > taskB.title) { return -1 }
-		return 0;
-	}
-
-	let reorderByDateDesc = (taskA, taskB) => {
-		let dateA = new Date(taskA.date).getTime()
-		let dateB = new Date(taskB.date).getTime()
-		if(dateA < dateB) { return 1 }
-		if(dateA > dateB) { return -1 }
-		return 0;
-	}
-
-	let reorderByPTimeDesc = (taskA, taskB) => {
-		if(taskA.pTime < taskB.pTime) { return 1 }
-		if(taskA.pTime > taskB.pTime) { return -1 }
-		return 0;
-	}
-
-    
-	let reorderByFTimeDesc = (taskA, taskB) => {
-		if(taskA.fTime < taskB.fTime) { return 1 }
-		if(taskA.fTime > taskB.fTime) { return -1 }
-		return 0;
-	}
-
-	let reorderByStatusDesc = (taskA, taskB) => {
-		let numStatus = (text)=>{
-			if (text == 'done') return 0
-			if (text == 'processing') return 1
-			if (text == 'planning') return 2
-			return 0
-		}
-		let a = numStatus(taskA.status)
-		let b = numStatus(taskB.status)
-		return a-b;
-	}
-
-
-	// Ascending
-	if ((sort=='byId')&&(type))
-		return reorderByIdAsc
-
-	if ((sort=='byTitle')&&(type))
-		return reorderByTitleAsc
-
-	if ((sort=='byDate')&&(type))
-		return reorderByDateAsc
-    
 	if ((sort=='byPriority')&&(type))
-		return reorderByPriorityAsc
-
-	if ((sort=='byPTime')&&(type))
-		return reorderByPTimeAsc
-    
-	if ((sort=='byFTime')&&(type))
-		return reorderByFTimeAsc
-
+		return (taskA, taskB) => {
+			let numPriority = (text)=>{
+				if (text == 'high') return 2
+				if (text == 'medium') return 1
+				if (text == 'low') return 0
+				return 0
+			}
+			let aPriority = numPriority(taskA.priority)
+			let bPriority = numPriority(taskB.priority)
+			return aPriority-bPriority;
+		}
 	if ((sort=='byStatus')&&(type))
-		return reorderByStatusAsc
+		return (taskA, taskB) => {
+			let numStatus = (text)=>{
+				if (text == 'done') return 2
+				if (text == 'processing') return 1
+				if (text == 'planning') return 0
+				return 0
+			}
+			let a = numStatus(taskA.status)
+			let b = numStatus(taskB.status)
+			return a-b;
+		}
 
-    
+
 	// Descending
-	if ((sort=='byId')&&(!type))
-		return reorderByIdDesc
-
-	if ((sort=='byTitle')&&(!type))
-		return reorderByTitleDesc
-
-	if ((sort=='byDate')&&(!type))
-		return reorderByDateDesc
-    
 	if ((sort=='byPriority')&&(!type))
-		return reorderByPriorityDesc
-
-	if ((sort=='byPTime')&&(!type))
-		return reorderByPTimeDesc
-    
-	if ((sort=='byFTime')&&(!type))
-		return reorderByFTimeDesc
-
+		return (taskA, taskB) => {
+			let numPriority = (text)=>{
+				if (text == 'high') return 0
+				if (text == 'medium') return 1
+				if (text == 'low') return 2
+				return 0
+			}
+			let aPriority = numPriority(taskA.priority)
+			let bPriority = numPriority(taskB.priority)
+			return aPriority-bPriority;
+		}
 	if ((sort=='byStatus')&&(!type))
-		return reorderByStatusDesc
+		return (taskA, taskB) => {
+			let numStatus = (text)=>{
+				if (text == 'done') return 0
+				if (text == 'processing') return 1
+				if (text == 'planning') return 2
+				return 0
+			}
+			let a = numStatus(taskA.status)
+			let b = numStatus(taskB.status)
+			return a-b;
+		}
 }
 
 
@@ -241,14 +170,18 @@ class TaskListFull extends Component {
     				<div className='form-inline mb-3'>
     					<div className='input-group input-group-sm mr-2 ml-2'>
     						<div className='input-group-prepend'>
-    							<span className='input-group-text' id='input_title'>Title</span>
+    							<span className='input-group-text' id='input_title'>
+										Title
+    							</span>
     						</div>
     						<input name='title' onChange={this.handleChange} type='text' className='form-control' aria-label='Small' aria-describedby='input_title'/>
     					</div>
                 
     					<div className='input-group input-group-sm mr-2 ml-2'>
     						<div className='input-group-prepend'>
-    							<span className='input-group-text' id='input_priority'>Priority</span>
+    							<span className='input-group-text' id='input_priority'>
+										Priority
+    							</span>
     						</div>
     						<select name='priority' onChange={this.handleChange} className='custom-select' id='inputGroupSelect01' aria-label='Small' aria-describedby='input_priority'>
     							<option value='all' defaultValue>All</option>
@@ -260,7 +193,9 @@ class TaskListFull extends Component {
 
     					<div className='input-group input-group-sm mr-2 ml-2'>
     						<div className='input-group-prepend'>
-    							<span className='input-group-text' id='input_status'>Status</span>
+    							<span className='input-group-text' id='input_status'>
+										Status
+    							</span>
     						</div>
     						<select name='status' onChange={this.handleChange} className='custom-select' id='inputGroupSelect02' aria-label='Small' aria-describedby='input_status'>
     							<option value='all' defaultValue>All</option>
@@ -269,7 +204,9 @@ class TaskListFull extends Component {
     							<option value='planning'>Planning</option>
     						</select>
     					</div>
-    					<button type='submit' className='btn btn-primary'>Create new task</button>
+    					<button type='submit' className='btn btn-primary'>
+								Create new task
+    					</button>
     				</div>
     			</form>
     			<table className='table table-bordered'>
@@ -277,7 +214,7 @@ class TaskListFull extends Component {
     					<tr>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            id
+                    id
     								<button className='hidden' name='byId' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
@@ -286,7 +223,7 @@ class TaskListFull extends Component {
     						</th>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            Title
+                    Title
     								<button className='hidden' name='byTitle' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
@@ -295,12 +232,12 @@ class TaskListFull extends Component {
     						</th>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            Description
+                    Description
     							</label>
     						</th>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            Date
+                    Date
     								<button className='hidden' name='byDate' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
@@ -309,7 +246,7 @@ class TaskListFull extends Component {
     						</th>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            Priority
+                    Priority
     								<button className='hidden' name='byPriority' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
@@ -318,7 +255,7 @@ class TaskListFull extends Component {
     						</th>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            Plan duration (h)
+                    Plan duration (h)
     								<button className='hidden' name='byPTime' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
@@ -327,7 +264,7 @@ class TaskListFull extends Component {
     						</th>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            Fact duration (h)
+                    Fact duration (h)
     								<button className='hidden' name='byFTime' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
@@ -336,7 +273,7 @@ class TaskListFull extends Component {
     						</th>
     						<th scope='col' style={{verticalAlign: 'middle'}}>
     							<label style={{display: 'inline-flex'}}>
-                            Status
+                    Status
     								<button className='hidden' name='byStatus' onClick={this.handleSort}></button>
     								<div className='ml-1'>
     									<FontAwesomeIcon icon='sort' />
@@ -354,7 +291,6 @@ class TaskListFull extends Component {
     					{myTasks.sort(reorder(this.state.sort, this.state.type)).map((task)=>{
     						let dateFormat = new Date(task.date).toLocaleString()
     						let result = (
-
     							<tr key={task.id} 
     								onMouseEnter={(e)=>{e.currentTarget.classList.add('table-active')}}
     								onMouseLeave={(e)=>{e.currentTarget.classList.remove('table-active')}}
@@ -375,8 +311,6 @@ class TaskListFull extends Component {
     									</label>
     								</td>
     							</tr>
-
-
     						)
                         
     						// Filter
@@ -395,9 +329,7 @@ class TaskListFull extends Component {
     			</table>
     			<hr/>
     		</div>
-
     	)
-
     }
 }
 

@@ -138,17 +138,13 @@ class ScrumDesk extends Component {
 
   onDragEnd = (result) =>{
   	const { source, destination, draggableId } = result
-
   	// dropped outside the list
   	if (!destination) {
   		return
   	}
-
   	// dropped on other list
   	if (source.droppableId != destination.droppableId) {
-    
   		let oldTask = this.props.tasks.find((task)=>(task.id===draggableId))
-
   		if (oldTask.user!=this.props.user) {
   			// wrong user
   			this.props.setAlert('WRONG_USER')
@@ -156,7 +152,6 @@ class ScrumDesk extends Component {
   		}
   		let newTask = {...oldTask, status: destination.droppableId}
   		this.taskChange({login:this.props.user, passHash: this.props.passHash}, newTask)
-			
   	}
   }
 
@@ -174,14 +169,15 @@ class ScrumDesk extends Component {
   			<div className='row no-gutters justify-content-center' style={{height: '100%'}}>
   				<DragDropContext onDragEnd={this.onDragEnd}>
   					<div className='col-4'>
-            
   						<Droppable droppableId='planning'>
   							{(provided, snapshot) => (
   								<div
   									ref={provided.innerRef}
   									style={getPlanningListStyle(snapshot.isDraggingOver)}
   								>
-  									<div className='card-header mb-2' style={getColoumnStyle().title}>Planning</div>
+  									<div className='card-header mb-2' style={getColoumnStyle().title}>
+											Planning
+  									</div>
   									{/* Coloumns of cards */}
   									{this.props.private // Public/Private desk
   										? this.props.scrumDesk.planning.map((item, index) => (item.user==this.props.user && draggableCard(item, index)) ) 
@@ -193,14 +189,15 @@ class ScrumDesk extends Component {
   						</Droppable>
   					</div>
   					<div className='col-4'>
-            
   						<Droppable droppableId='processing'>
   							{(provided, snapshot) => ( 
   								<div
   									ref={provided.innerRef}
   									style={getProcessingListStyle(snapshot.isDraggingOver)}
   								>
-  									<div className='card-header mb-2' style={getColoumnStyle().title}>Processing</div>
+  									<div className='card-header mb-2' style={getColoumnStyle().title}>
+											Processing
+  									</div>
   									{/* Coloumns of cards */}
   									{this.props.private ? // Public/Private desk
   										this.props.scrumDesk.processing.map((item, index) => (item.user==this.props.user && draggableCard(item, index)) ) 
@@ -212,14 +209,15 @@ class ScrumDesk extends Component {
   						</Droppable>
   					</div>
   					<div className='col-4'>
-            
   						<Droppable droppableId='done'>
   							{(provided, snapshot) => (
   								<div
   									ref={provided.innerRef}
   									style={getDoneListStyle(snapshot.isDraggingOver)}
   								>
-  									<div className='card-header mb-2' style={getColoumnStyle().title}>Done</div>
+  									<div className='card-header mb-2' style={getColoumnStyle().title}>
+											Done
+  									</div>
   									{/* Coloumns of cards */}
   									{this.props.private ? // Public/Private desk
   										this.props.scrumDesk.done.map((item, index) => (item.user==this.props.user && draggableCard(item, index)) ) 
@@ -235,7 +233,6 @@ class ScrumDesk extends Component {
   		</div>
   	)
   }
-
 }
 
 

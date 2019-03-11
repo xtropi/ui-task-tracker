@@ -8,8 +8,8 @@ import { setAlert } from '../actions/setAlertAction'
 class TaskList extends Component {
 
 	componentDidMount(){
-		// Logout and empty storage
-		clearState()
+		// Uncomment if you want to clear sessionStorage after Logout
+		// clearState()
 		this.props.auth(false)
 		this.props.setAlert('LOGOUT')
 	}
