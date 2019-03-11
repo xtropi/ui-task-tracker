@@ -13,8 +13,10 @@ let reorder = (sort, type)=>{
 
 	// Ascending
 	let reorderByIdAsc = (taskA, taskB) => {
-		if(taskA.id < taskB.id) { return -1 }
-		if(taskA.id > taskB.id) { return 1 }
+		let numIdA = parseInt(taskA.id.split('-')[1], 10)
+		let numIdB = parseInt(taskB.id.split('-')[1], 10)
+		if(numIdA < numIdB) { return -1 }
+		if(numIdA > numIdB) { return 1 }
 		return 0;
 	}
 
@@ -71,8 +73,10 @@ let reorder = (sort, type)=>{
 
 	// Descending
 	let reorderByIdDesc = (taskA, taskB) => {
-		if(taskA.id < taskB.id) { return 1 }
-		if(taskA.id > taskB.id) { return -1 }
+		let numIdA = parseInt(taskA.id.split('-')[1], 10)
+		let numIdB = parseInt(taskB.id.split('-')[1], 10)
+		if(numIdA < numIdB) { return 1 }
+		if(numIdA > numIdB) { return -1 }
 		return 0;
 	}
 
@@ -217,23 +221,14 @@ class TaskListFull extends Component {
 			this.props.setAlert('SUCCESS_DELETE')
 		}
 		
-
-    handleSubmit = (event) => {
+    handleInitiateTaskCreation = async (event) => {
     	event.preventDefault()
-    	// Seraching for voids in tasks array
-    	let newTaskNum = 0
-    	this.props.tasks.sort(reorder('byId', true)).map((task)=>{
-    		if (task.id!=`task-${newTaskNum}`){
-    			// Create new task in founded void with lacking id 
-    			this.setState({...this.state, referrer: `task-${newTaskNum}`})
-    			return
-    		} else {
-    			newTaskNum++
-    		}
-    	})
-        
-    	// if no voids push new task at the end
-    	!this.state.referrer && this.setState({...this.state, referrer: `task-${newTaskNum}`})
+    	let result = await axios.post(`${config.beString}${config.beServiceNames.taskCreateInit}`, {authData: {login:this.props.user, passHash: this.props.passHash}})
+    	if (result.data.msg=='Success'){
+    		this.setState({...this.state, referrer: result.data.id})
+    	} else {
+    		this.props.setAlert('GET_TASKS_FAIL')
+    	}
     }
 
     render(){
@@ -242,7 +237,7 @@ class TaskListFull extends Component {
     	return(
     		<div style={{margin: '20px'}}>
     			{ this.state.referrer && <Redirect to={`/mytasks/${this.state.referrer}`} push/>}
-    			<form onSubmit={this.handleSubmit}>
+    			<form onSubmit={this.handleInitiateTaskCreation}>
     				<div className='form-inline mb-3'>
     					<div className='input-group input-group-sm mr-2 ml-2'>
     						<div className='input-group-prepend'>

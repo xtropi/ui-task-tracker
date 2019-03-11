@@ -6,6 +6,7 @@ var bePort = '6565';
 var beServiceNames = {
 	auth: 'auth',
 	getTasks: 'getTasks',
+	taskCreateInit: 'taskCreateInit',
 	taskCreate: 'taskCreate',
 	taskChange: 'taskChange',
 	taskDelete: 'taskDelete'

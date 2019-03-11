@@ -7,11 +7,18 @@ const bodyParser = require('body-parser')
 /*MOCKDATA->*/
 const { tasksMock } = require('./tasksMockData.json')
 const { usersMock } = require('./usersMockData.json')
-console.log(usersMock)
 var sessionTasksMock = tasksMock
 var sessionUsersMock = usersMock
 /*<-MOCKDATA*/
 
+
+var reorderByIdAsc = (taskA, taskB) => {
+	var numIdA = parseInt(taskA.id.split('-')[1], 10)
+	var numIdB = parseInt(taskB.id.split('-')[1], 10)
+	if(numIdA < numIdB) { return -1 }
+	if(numIdA > numIdB) { return 1 }
+	return 0;
+}
 
 var authentication = (login, passHash)=>{
 	var matched = sessionUsersMock.find((user)=>{
@@ -56,8 +63,37 @@ app.post('/auth', function(req, res){
 	res.send(authentication(req.body.authData.login, req.body.authData.passHash))
 })
 
+app.post('/taskCreateInit', function(req, res){
+	var bus = {
+		msg: 'Failed',
+	}
+	if (authentication(req.body.authData.login, req.body.authData.passHash).msg=='Success'){
+		// Seraching for voids in tasks array
+		var newTaskNum = 0
+		var newTaskId = null
+		sessionTasksMock.sort(reorderByIdAsc).map((task)=>{
+			if (task.id!='task-'+newTaskNum){
+				// Create new task in founded void with lacking id 
+				newTaskId = 'task-'+newTaskNum
+				return
+			} else {
+				newTaskNum++
+			}
+		})
+		// if no voids push new task at the end
+		if(!newTaskId)
+			newTaskId = 'task-'+newTaskNum
+		console.log('Void founded: '+newTaskId)
+		bus = {
+			msg: 'Success',
+			id: newTaskId,
+		}
+	} 
+	console.log('taskCreateInit: '+bus.msg)
+	res.send(bus)
+})
+
 app.post('/taskCreate', function(req, res){
-	console.log('taskCreate: '+req.body.task.id)
 	var newTasks = []
 	var bus = {
 		msg: 'Failed',

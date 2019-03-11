@@ -32,7 +32,6 @@ class Register extends Component {
 
     handleSubmit = (e)=>{
 			e.preventDefault()
-			console.log(config)
     	bcrypt.hash(this.state.pass, config.salt, (err, hash)=>{
     		if (err){
     			return console.log(err);
