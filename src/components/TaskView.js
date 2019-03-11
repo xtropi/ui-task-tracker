@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router'
 import { connect } from 'react-redux'
 import axios from 'axios'
 import { config } from '../../config'
@@ -19,6 +20,7 @@ class TaskView extends Component {
     		status: 'planning',
     	},
     	new: true,
+    	referrer: null,
     }
 
     componentDidMount(){
@@ -71,6 +73,7 @@ class TaskView extends Component {
     	if (event.currentTarget.name=='create'){
     		this.taskCreate({login:this.props.user, passHash: this.props.passHash}, this.state.task)
     		this.props.setAlert('SUCCESS_CREATE')
+    		this.setState({...this.state, referrer: '/mytasks'})
     	}
     }
 
@@ -82,6 +85,7 @@ class TaskView extends Component {
     render(){
     	return(
     		<div>
+    			{this.state.referrer && <Redirect to={this.state.referrer} push/>}
     			<form name={!this.state.new ? 'change' : 'create'} onSubmit={this.handleSubmit} style={{margin: '20px 100px'}}>
     				<div className='form-row'>
     					<div className='form-group col-md-4'>
