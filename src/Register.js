@@ -31,7 +31,7 @@ class Register extends Component {
 		}
 
     handleSubmit = (e)=>{
-			e.preventDefault()
+    	e.preventDefault()
     	bcrypt.hash(this.state.pass, config.salt, (err, hash)=>{
     		if (err){
     			return console.log(err);
@@ -53,10 +53,24 @@ class Register extends Component {
     			<form className='mx-auto my-auto text-center w-25' onSubmit={this.handleSubmit}>
     				<h1 className='form-group text-center font-weight-bold'>Task tracker</h1>
     				<div className='form-group'>
-    					<input name='login' onChange={this.handleInput} value={this.state.login} type='login' className='form-control' id='exampleInputLogin1' aria-describedby='emailHelp' placeholder='Enter login'/>
+    					<input 
+    						name='login' onChange={this.handleInput} 
+    						value={this.state.login} type='login' 
+    						className='form-control' id='exampleInputLogin1' 
+    						aria-describedby='emailHelp' placeholder='Enter login'
+    						size='30' minLength='4'
+    						required
+    					/>
     				</div>
     				<div className='form-group'>
-    					<input name='pass' onChange={this.handleInput} value={this.state.pass} type='password' className='form-control' id='exampleInputPassword1' placeholder='Password'/>
+    					<input 
+    						name='pass' onChange={this.handleInput} 
+    						value={this.state.pass} type='password' 
+    						className='form-control' id='exampleInputPassword1' 
+    						placeholder='Password' size='30' 
+    						minLength='4' 
+    						required
+    					/>
     				</div>
     				<button type='submit' className='btn btn-primary'>Sign in</button>
     			</form>

@@ -89,19 +89,37 @@ class TaskView extends Component {
     						<label htmlFor='inputDate'>
 									Date
 								</label>
-    						<input name='date' disabled='disabled' value={new Date(this.state.task.date).toLocaleString()} onChange={this.handleChange} type='text' className='form-control' id='inputDate'/>
+								<input name='date' disabled='disabled' 
+									value={new Date(this.state.task.date).toLocaleString()} onChange={this.handleChange} 
+									type='text' className='form-control' 
+									id='inputDate'
+									required
+								/>
     					</div>
     					<div className='form-group col-md-4'>
     						<label htmlFor='inputId'>
 									Id
 								</label>
-    						<input disabled='disabled' name='id' value={this.state.task.id} onChange={this.handleChange} type='text' className='form-control' id='inputId'/>
+								<input 
+									disabled='disabled' name='id' 
+									value={this.state.task.id} onChange={this.handleChange} 
+									type='text' className='form-control' 
+									id='inputId'
+									required
+								/>
     					</div>
     					<div className='form-group col-md-4'>
     						<label htmlFor='inputUser'>
 									User
 								</label>
-    						<input disabled={!this.state.new && 'disabled'} name='user' value={this.state.task.user} onChange={this.handleChange} type='text' className='form-control' id='inputUser'/>
+								<input 
+									disabled={!this.state.new && 'disabled'} name='user' 
+									value={this.state.task.user} onChange={this.handleChange} 
+									type='text' className='form-control' 
+									id='inputUser'
+									size='30' minLength='4'
+    							required
+								/>
     					</div>
 
     				</div>
@@ -109,13 +127,25 @@ class TaskView extends Component {
     					<label htmlFor='inputTitle'>
 								Title
 							</label>
-    					<input name='title' value={this.state.task.title} onChange={this.handleChange} type='text' className='form-control' id='inputTitle'/>
+							<input 
+								name='title' value={this.state.task.title} 
+								onChange={this.handleChange} type='text' 
+								className='form-control' id='inputTitle'
+								size='30' minLength='3'
+								required
+							/>
     				</div>
     				<div className='form-group'>
     					<label htmlFor='inputDescription'>
 								Description
 							</label>
-    					<input name='description' value={this.state.task.description} onChange={this.handleChange} type='text' className='form-control' id='inputDescription'/>
+							<input 
+								name='description' value={this.state.task.description} 
+								onChange={this.handleChange} type='text' 
+								className='form-control' id='inputDescription'
+								size='255' minLength='3'
+								required
+							/>
     				</div>
     				<div className='form-row'>
     					<div className='form-group col-md-3'>
@@ -142,13 +172,25 @@ class TaskView extends Component {
 								<label htmlFor='inputPTime'>
 									Plan duration (hours)
 								</label>
-								<input name='pTime' value={this.state.task.pTime} onChange={this.handleChange} type='number' min='0' className='form-control' id='inputPTime'/>
+								<input 
+									name='pTime' value={this.state.task.pTime} 
+									onChange={this.handleChange} type='number' 
+									min='0' className='form-control' 
+									id='inputPTime'
+									required
+								/>
 							</div>
 							<div className='form-group col-md-3'>
 								<label htmlFor='inputFTime'>
 									Fact duration (hours)
 								</label>
-								<input name='fTime' value={this.state.task.fTime} onChange={this.handleChange} type='number' min='0' className='form-control' id='inputFTime'/>
+								<input 
+									name='fTime' value={this.state.task.fTime} 
+									onChange={this.handleChange} type='number' 
+									min='0' className='form-control' 
+									id='inputFTime'
+									required
+								/>
 							</div>
     				</div>
 
