@@ -22,14 +22,14 @@ let reorder = (sort, type)=>{
 			return 0;
 		}
 	}
-	if ((sort=='byTitle')&&(type)){
+	if (sort=='byTitle'){
 		return (taskA, taskB) => {
 			if(taskA.title < taskB.title) { return -1*direction }
 			if(taskA.title > taskB.title) { return 1*direction }
 			return 0;
 		}
 	}
-	if ((sort=='byDate')&&(type)){
+	if (sort=='byDate'){
 		return (taskA, taskB) => {
 			let dateA = new Date(taskA.date).getTime()
 			let dateB = new Date(taskB.date).getTime()
@@ -38,14 +38,14 @@ let reorder = (sort, type)=>{
 			return 0;
 		}
 	}
-	if ((sort=='byPTime')&&(type)){
+	if (sort=='byPTime'){
 		return (taskA, taskB) => {
 			if(taskA.pTime < taskB.pTime) { return -1*direction }
 			if(taskA.pTime > taskB.pTime) { return 1*direction }
 			return 0;
 		}
 	}
-	if ((sort=='byFTime')&&(type)){
+	if (sort=='byFTime'){
 		return (taskA, taskB) => {
 			if(taskA.fTime < taskB.fTime) { return -1*direction }
 			if(taskA.fTime > taskB.fTime) { return 1*direction }
