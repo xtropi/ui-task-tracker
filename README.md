@@ -74,3 +74,15 @@ Open
 ```sh
 http://localhost:8080/
 ```
+
+Try this credentials
+```sh
+login: root
+pass: root
+```
+
+Or you can manage mockdata on your own in "./mockServer/"
+```sh
+./mockServer/tasksMockData.json
+./mockServer/usersMockData.json
+```
