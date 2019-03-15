@@ -7,9 +7,9 @@ import { tasksSet } from '../actions/tasksSetAction'
 import { setAlert } from '../actions/setAlertAction'
 
 
-let getCardStyle = (isDragging, draggableStyle, item) => {
+const getCardStyle = (isDragging, draggableStyle, item) => {
 // do not remove item param - may be useful later
-	let result = {
+	return ({
 		card: {
 			userSelect: 'none',
 			width: '300px',
@@ -31,12 +31,11 @@ let getCardStyle = (isDragging, draggableStyle, item) => {
 			bottom: '3px',
 			right: '5px',
 		},
-	}
-	return result
+	})
 }
 
-let getColoumnStyle = () => {
-	let result = {
+const getColoumnStyle = () => {
+	return {
 		title: {
 			fontWeight: 'bold'
 		},
@@ -44,10 +43,9 @@ let getColoumnStyle = () => {
 
 		},
 	}
-	return result
 }
 
-let draggableCard = (item, index)=>{
+const draggableCard = (item, index)=>{
 	// Coloring by prior with bootstrap
 	let colorPriority = 'black'
 	if (item.priority=='high'){
@@ -60,7 +58,7 @@ let draggableCard = (item, index)=>{
 		colorPriority = 'card text-white bg-success'
 	}
 
-	let result = (
+	return (
 		<Draggable key={item.id} draggableId={item.id} index={index}>
 			{(provided, snapshot) => (
 				<div className='row mb-2 justify-content-center no-gutters'>
@@ -100,24 +98,22 @@ let draggableCard = (item, index)=>{
 			)}
 		</Draggable>
 	)
-
-	return result
 }
 
 // Lists styles
-let getPlanningListStyle = () => ({
+const getPlanningListStyle = () => ({
 	background: 'rgb(255,255,235)',
 	width: '100%',
 	height: '100%'
 })
   
-let getProcessingListStyle = () => ({
+const getProcessingListStyle = () => ({
 	background: 'rgb(184,250,184)',
 	width: '100%',
 	height: '100%'
 })
 
-let getDoneListStyle = () => ({
+const getDoneListStyle = () => ({
 	background: 'lightblue',
 	width: '100%',
 	height: '100%'
@@ -144,13 +140,13 @@ class ScrumDesk extends Component {
   	}
   	// dropped on other list
   	if (source.droppableId != destination.droppableId) {
-  		let oldTask = this.props.tasks.find((task)=>(task.id===draggableId))
+  		const oldTask = this.props.tasks.find((task)=>(task.id===draggableId))
   		if (oldTask.user!=this.props.user) {
   			// wrong user
   			this.props.setAlert('WRONG_USER')
   			return
   		}
-  		let newTask = {...oldTask, status: destination.droppableId}
+  		const newTask = {...oldTask, status: destination.droppableId}
   		this.taskChange({login:this.props.user, passHash: this.props.passHash}, newTask)
   	}
   }

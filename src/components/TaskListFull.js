@@ -9,14 +9,14 @@ import { representationChange } from '../actions/representationChangeAction'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // a little function to help with reordering the result
-let reorder = (sort, type)=>{
+const reorder = (sort, type)=>{
 	// Both ascending and descending
-	let direction =
+	const direction =
 		type ? 1 : -1
 	if (sort=='byId'){
 		return (taskA, taskB) => {
-			let numIdA = parseInt(taskA.id.split('-')[1], 10)
-			let numIdB = parseInt(taskB.id.split('-')[1], 10)
+			const numIdA = parseInt(taskA.id.split('-')[1], 10)
+			const numIdB = parseInt(taskB.id.split('-')[1], 10)
 			if(numIdA < numIdB) { return -1*direction }
 			if(numIdA > numIdB) { return 1*direction }
 			return 0;
@@ -31,8 +31,8 @@ let reorder = (sort, type)=>{
 	}
 	if (sort=='byDate'){
 		return (taskA, taskB) => {
-			let dateA = new Date(taskA.date).getTime()
-			let dateB = new Date(taskB.date).getTime()
+			const dateA = new Date(taskA.date).getTime()
+			const dateB = new Date(taskB.date).getTime()
 			if(dateA < dateB) { return -1*direction }
 			if(dateA > dateB) { return 1*direction }
 			return 0;
@@ -56,26 +56,26 @@ let reorder = (sort, type)=>{
 	// Ascending
 	if ((sort=='byPriority')&&(type))
 		return (taskA, taskB) => {
-			let numPriority = (text)=>{
+			const numPriority = (text)=>{
 				if (text == 'high') return 2
 				if (text == 'medium') return 1
 				if (text == 'low') return 0
 				return 0
 			}
-			let aPriority = numPriority(taskA.priority)
-			let bPriority = numPriority(taskB.priority)
+			const aPriority = numPriority(taskA.priority)
+			const bPriority = numPriority(taskB.priority)
 			return aPriority-bPriority;
 		}
 	if ((sort=='byStatus')&&(type))
 		return (taskA, taskB) => {
-			let numStatus = (text)=>{
+			const numStatus = (text)=>{
 				if (text == 'done') return 2
 				if (text == 'processing') return 1
 				if (text == 'planning') return 0
 				return 0
 			}
-			let a = numStatus(taskA.status)
-			let b = numStatus(taskB.status)
+			const a = numStatus(taskA.status)
+			const b = numStatus(taskB.status)
 			return a-b;
 		}
 
@@ -83,26 +83,26 @@ let reorder = (sort, type)=>{
 	// Descending
 	if ((sort=='byPriority')&&(!type))
 		return (taskA, taskB) => {
-			let numPriority = (text)=>{
+			const numPriority = (text)=>{
 				if (text == 'high') return 0
 				if (text == 'medium') return 1
 				if (text == 'low') return 2
 				return 0
 			}
-			let aPriority = numPriority(taskA.priority)
-			let bPriority = numPriority(taskB.priority)
+			const aPriority = numPriority(taskA.priority)
+			const bPriority = numPriority(taskB.priority)
 			return aPriority-bPriority;
 		}
 	if ((sort=='byStatus')&&(!type))
 		return (taskA, taskB) => {
-			let numStatus = (text)=>{
+			const numStatus = (text)=>{
 				if (text == 'done') return 0
 				if (text == 'processing') return 1
 				if (text == 'planning') return 2
 				return 0
 			}
-			let a = numStatus(taskA.status)
-			let b = numStatus(taskB.status)
+			const a = numStatus(taskA.status)
+			const b = numStatus(taskB.status)
 			return a-b;
 		}
 }
@@ -161,8 +161,8 @@ class TaskListFull extends Component {
     }
 
     render(){
-    	let {user, tasks} = this.props
-    	let myTasks = tasks.filter((task)=>(task.user==user))
+    	const {user, tasks} = this.props
+    	const myTasks = tasks.filter((task)=>(task.user==user))
     	return(
     		<div style={{margin: '20px'}}>
     			{ this.state.referrer && <Redirect to={`/mytasks/${this.state.referrer}`} push/>}
@@ -289,8 +289,8 @@ class TaskListFull extends Component {
     				</thead>
     				<tbody>
     					{myTasks.sort(reorder(this.state.sort, this.state.type)).map((task)=>{
-    						let dateFormat = new Date(task.date).toLocaleString()
-    						let result = (
+    						const dateFormat = new Date(task.date).toLocaleString()
+    						const result = (
     							<tr key={task.id} 
     								onMouseEnter={(e)=>{e.currentTarget.classList.add('table-active')}}
     								onMouseLeave={(e)=>{e.currentTarget.classList.remove('table-active')}}
